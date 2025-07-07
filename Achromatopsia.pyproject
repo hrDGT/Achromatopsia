@@ -1,5 +1,6 @@
 {
     "files": [
+        "battle_scene.py",
         "main.py"
     ]
 }

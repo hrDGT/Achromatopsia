@@ -1,0 +1,149 @@
+{
+    "1": {
+        "background": "bg1.svg",
+        "character": "character1_1.png",
+        "music": "theme1.mp3",
+        "music_continue": true,
+        "text": "Это текст первой сцены."
+    },
+    "2": {
+        "background": "bg2.png",
+        "character": "character1_1.png",
+        "music": "",
+        "music_continue": true,
+        "text": "Текст для второй сцены."
+    },
+    "3": {
+        "background": "bg3.png",
+        "character": "character1_2.png",
+        "music": "",
+        "music_continue": true,
+        "text": "Текст третьей сцены."
+    },
+    "4": {
+        "background": "bg4.png",
+        "character": "character1_2.png",
+        "music": "",
+        "music_continue": true,
+        "text": "Текст четвертой сцены."
+    },
+    "5": {
+        "background": "bg5.png",
+        "character": "character1_2.png",
+        "music": "",
+        "music_continue": true,
+        "text": "Текст пятой сцены."
+    },
+    "6": {
+        "background": "bg6.png",
+        "character": "character1_2.png",
+        "music": "",
+        "music_continue": true,
+        "text": "Текст шестой сцены."
+    },
+    "7": {
+        "background": "bg7.png",
+        "character": "character1_2.png",
+        "music": "",
+        "music_continue": true,
+        "text": "Текст седьмой сцены."
+    },
+    "8": {
+        "background": "bg8.png",
+        "character": "character1_2.png",
+        "music": "",
+        "music_continue": true,
+        "text": "Текст восьмой сцены."
+    },
+    "9": {
+        "background": "bg9.png",
+        "character": "character1_2.png",
+        "music": "",
+        "music_continue": true,
+        "text": "Текст девятой сцены."
+    },
+    "10": {
+        "background": "bg10.png",
+        "character": "character1_2.png",
+        "music": "",
+        "music_continue": true,
+        "text": "Текст десятой сцены."
+    },
+    "11": {
+        "background": "bg11.png",
+        "character": "character1_2.png",
+        "music": "",
+        "music_continue": true,
+        "text": "Текст одиннадцатой сцены."
+    },
+    "12": {
+        "background": "bg12.png",
+        "character": "character1_2.png",
+        "music": "",
+        "music_continue": true,
+        "text": "Текст двенадцатой сцены."
+    },
+    "13": {
+        "background": "bg13.png",
+        "character": "character1_2.png",
+        "music": "",
+        "music_continue": true,
+        "text": "Текст тринадцатой сцены."
+    },
+    "14": {
+        "background": "bg14.png",
+        "character": "character1_2.png",
+        "music": "",
+        "music_continue": true,
+        "text": "Текст четырнадцатой сцены."
+    },
+    "15": {
+        "background": "bg15.png",
+        "character": "character1_2.png",
+        "music": "",
+        "music_continue": true,
+        "text": "Текст пятнадцатой сцены."
+    },
+    "16": {
+        "background": "bg16.png",
+        "character": "character1_2.png",
+        "music": "",
+        "music_continue": true,
+        "text": "Текст шестнадцатой сцены."
+    },
+    "17": {
+        "background": "bg17.png",
+        "character": "character1_2.png",
+        "music": "",
+        "music_continue": true,
+        "text": "Текст семнадцатой сцены."
+    },
+    "18": {
+        "background": "bg18.png",
+        "character": "character1_2.png",
+        "music": "",
+        "music_continue": true,
+        "text": "Текст восемнадцатой сцены."
+    },
+    "19": {
+        "background": "bg19.png",
+        "character": "character1_2.png",
+        "music": "",
+        "music_continue": true,
+        "text": "Текст девятнадцатой сцены."
+    },
+    "20": {
+        "background": "bg20.png",
+        "character": "character1_2.png",
+        "music": "",
+        "music_continue": true,
+        "text": "Текст двадцатой сцены."
+    },
+    "21": {
+        "background": "bg21.png",
+        "character": "character1_2.png",
+        "music": "",
+        "music_continue": true,
+        "text": "Текст двадцать первой сцены."
+    }
+}

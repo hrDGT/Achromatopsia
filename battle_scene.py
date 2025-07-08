@@ -33,15 +33,15 @@ class BattleScene(QGraphicsView):
         self.enemy_height = 700
 
         # Параметры заклинания персонажа
-        self.character_spell_x = 170
+        self.character_spell_x = 90
         self.character_spell_y = 300
         self.character_spell_width = 1400
         self.character_spell_height = 200
 
         # Параметры заклинания противника
-        self.enemy_spell_x = 70
+        self.enemy_spell_x = 60
         self.enemy_spell_y = 300
-        self.enemy_spell_width = 1230
+        self.enemy_spell_width = 1400
         self.enemy_spell_height = 200
 
         # Параметры health bar'ов
@@ -349,7 +349,7 @@ class BattleScene(QGraphicsView):
         self.enemy_spell_movie.frameChanged.connect(self.update_enemy_spell_frame)
 
         # Урон
-        self.enemy_damage_movie = QMovie("assets/animations/hurt.gif")
+        self.enemy_damage_movie = QMovie("assets/animations/enemy_hurt.gif")
         self.enemy_damage_movie.setScaledSize(QSize(self.enemy_width, self.enemy_height))
         self.enemy_damage_movie.frameChanged.connect(self.update_enemy_damage_frame)
 
@@ -415,6 +415,15 @@ class BattleScene(QGraphicsView):
     def play_spell_animation(self):
         if self.is_casting:
             return
+
+        # Проверка и уменьшение маны персонажа
+        if self.character_mana < 5:  # Требуется 5 маны для заклинания
+            print("Not enough mana!")
+            return
+
+        self.character_mana -= 5  # Уменьшаем ману
+        self.update_text_values()  # Обновляем отображение
+
         self.spell_item.setVisible(True)
         self.spell_movie.start()
         self.spell_movie.jumpToFrame(0)
@@ -435,6 +444,11 @@ class BattleScene(QGraphicsView):
     def play_enemy_damage_animation(self):
         if self.is_enemy_taking_damage:
             return
+
+        # Уменьшаем здоровье врага
+        self.enemy_health = max(0, self.enemy_health - 1)
+        self.update_text_values()
+
         self.enemy_item.setVisible(False)
         self.enemy_damage_item.setVisible(True)
         self.enemy_damage_movie.start()
@@ -450,6 +464,11 @@ class BattleScene(QGraphicsView):
     def play_character_damage_animation(self):
         if self.is_character_taking_damage:
             return
+
+        # Уменьшаем здоровье персонажа
+        self.character_health = max(0, self.character_health - 1)
+        self.update_text_values()
+
         self.character_item.setVisible(False)
         self.character_damage_item.setVisible(True)
         self.character_damage_movie.start()
@@ -479,6 +498,15 @@ class BattleScene(QGraphicsView):
     def play_enemy_spell_animation(self):
         if self.is_enemy_casting:
             return
+
+        # Проверка и уменьшение маны противника
+        if self.enemy_mana < 5:  # Требуется 5 маны для заклинания
+            print("Enemy not enough mana!")
+            return
+
+        self.enemy_mana -= 5  # Уменьшаем ману
+        self.update_text_values()  # Обновляем отображение
+
         self.enemy_spell_item.setVisible(True)
         self.enemy_spell_movie.start()
         self.enemy_spell_movie.jumpToFrame(0)
@@ -523,9 +551,18 @@ class BattleScene(QGraphicsView):
                 x_pos = margin + i * (icon_size + spacing)
                 icon.setPos(x_pos, 15)
                 icon.setAcceptHoverEvents(True)
+
+                # Добавляем обработчик клика
+                icon.mousePressEvent = lambda event, idx=i: self.handle_spell_click(idx)
+                self.scene().addItem(icon)
                 self.spell_icons.append(icon)
             except:
                 print(f"Failed to load spell icon {i+1}")
+
+    def handle_spell_click(self, spell_index):
+        print(f"Spell {spell_index+1} clicked!")
+        # Запускаем анимацию атаки, которая затем перейдет в заклинание
+        self.play_attack_animation()
 
     def fit_background(self):
         if not hasattr(self, 'background_pixmap') or self.background_pixmap.isNull():

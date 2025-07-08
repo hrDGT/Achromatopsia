@@ -1,3 +1,4 @@
+import json
 from PySide6.QtWidgets import QGraphicsView, QGraphicsScene, QGraphicsPixmapItem, QGraphicsTextItem
 from PySide6.QtCore import Qt, QRectF, QPointF, QSize, QTimer
 from PySide6.QtGui import QPixmap, QKeyEvent, QPainter, QColor, QMovie, QTransform, QFont
@@ -36,14 +37,14 @@ class BattleScene(QGraphicsView):
         # Параметры заклинания персонажа
         self.character_spell_x = 90
         self.character_spell_y = 300
-        self.character_spell_width = 1400
-        self.character_spell_height = 200
+        self.character_spell_width = 1350
+        self.character_spell_height = 400
 
         # Параметры заклинания противника
         self.enemy_spell_x = 60
-        self.enemy_spell_y = 300
+        self.enemy_spell_y = 250
         self.enemy_spell_width = 1400
-        self.enemy_spell_height = 200
+        self.enemy_spell_height = 270
 
         # Параметры health bar'ов
         self.health_bar_width = 336
@@ -165,12 +166,66 @@ class BattleScene(QGraphicsView):
         self.enemy_health_text.setDefaultTextColor(self.health_color)
         self.enemy_mana_text.setDefaultTextColor(self.mana_color)
 
+        # Загрузка заклинаний (раздельно для игрока и противника)
+        self.spells = self.load_spells('assets/spells/spells.json')  # Заклинания игрока
+        self.enemy_spells = self.load_spells('assets/spells/enemy_spells.json')  # Заклинания противника
         self.spell_icons = []
+        self.selected_spell = None
+        self.enemy_selected_spell = None  # Выбранное заклинание противника
+        self.current_spell_damage = 0
+        self.enemy_current_spell_damage = 0  # Урон заклинания противника
+        self.spell_animations = {}  # Кеш для анимаций заклинаний
 
         self.setup_animations()
         self.create_spell_panel()
         self.fit_background()
         self.update_text_values()
+
+        # Устанавливаем активность иконок в зависимости от текущего хода
+        if self.current_turn == 'enemy':
+            self.set_spell_icons_active(False)
+        else:
+            self.set_spell_icons_active(True)
+
+    def is_any_animation_running(self):
+        """Проверяет, идет ли в данный момент какая-либо анимация"""
+        return (self.is_attacking or
+                self.is_casting or
+                self.is_enemy_attacking or
+                self.is_enemy_casting or
+                self.is_enemy_taking_damage or
+                self.is_character_taking_damage)
+
+    def can_cast_spell(self, spell_key):
+        """Проверяет, можно ли использовать заклинание"""
+        spell = self.spells.get(spell_key)
+        if not spell:
+            return False
+        return self.character_mana >= spell['cost']
+
+    def load_spells(self, filename):
+        """Загрузка заклинаний из указанного JSON-файла"""
+        spells = {}
+        try:
+            with open(filename, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                for key, value in data.items():
+                    # Преобразуем строковые значения в числа
+                    value['damage'] = int(value['damage'])
+                    value['cost'] = int(value['cost'])
+                    spells[key] = value
+        except Exception as e:
+            print(f"Error loading spells from {filename}: {e}")
+            # Запасные данные на случай ошибки
+            spells = {
+                "default_spell": {
+                    "icon": "default_icon.png",
+                    "animation": "default_animation.gif",
+                    "damage": 5,
+                    "cost": 3
+                }
+            }
+        return spells
 
     def initialize_turn_system(self):
         """Инициализация системы ходов"""
@@ -209,7 +264,7 @@ class BattleScene(QGraphicsView):
             if bar_type == "health":
                 base_name = "enemy_hp_bar"
             else:  # mana
-                base_name = "mana_bar"
+                base_name = "enemy_mana_bar"
         else:  # character
             base_name = "hp_bar" if bar_type == "health" else "mana_bar"
 
@@ -262,6 +317,10 @@ class BattleScene(QGraphicsView):
         # Обновляем позиции текста
         self.update_health_bars_positions()
         self.update_mana_bars_positions()
+
+        # Обновляем состояние иконок после изменения маны
+        if self.current_turn == 'player':
+            self.set_spell_icons_active(True)
 
     def update_health_bars_positions(self):
         """Обновление позиций health bar'ов и текста относительно панели заклинаний"""
@@ -357,15 +416,8 @@ class BattleScene(QGraphicsView):
         self.enemy_attack_movie.setScaledSize(QSize(self.enemy_width, self.enemy_height))
         self.enemy_attack_movie.frameChanged.connect(self.update_enemy_attack_frame)
 
-        # Заклинания персонажа
-        self.spell_movie = QMovie("assets/animations/tornado.gif")
-        self.spell_movie.setScaledSize(QSize(self.character_spell_width, self.character_spell_height))
-        self.spell_movie.frameChanged.connect(self.update_spell_frame)
-
-        # Заклинания противника
-        self.enemy_spell_movie = QMovie("assets/animations/fireball_2.gif")
-        self.enemy_spell_movie.setScaledSize(QSize(self.enemy_spell_width, self.enemy_spell_height))
-        self.enemy_spell_movie.frameChanged.connect(self.update_enemy_spell_frame)
+        # Заклинания противника (по умолчанию)
+        self.enemy_spell_movie = None
 
         # Урон
         self.enemy_damage_movie = QMovie("assets/animations/enemy_hurt.gif")
@@ -404,14 +456,16 @@ class BattleScene(QGraphicsView):
             self.stop_enemy_attack_animation()
 
     def update_spell_frame(self, frame_number):
-        self.spell_item.setPixmap(self.spell_movie.currentPixmap())
-        if frame_number == self.spell_movie.frameCount() - 1:
-            self.stop_spell_animation()
+        if hasattr(self, 'spell_movie'):
+            self.spell_item.setPixmap(self.spell_movie.currentPixmap())
+            if frame_number == self.spell_movie.frameCount() - 1:
+                self.stop_spell_animation()
 
     def update_enemy_spell_frame(self, frame_number):
-        self.enemy_spell_item.setPixmap(self.enemy_spell_movie.currentPixmap())
-        if frame_number == self.enemy_spell_movie.frameCount() - 1:
-            self.stop_enemy_spell_animation()
+        if hasattr(self, 'enemy_spell_movie'):
+            self.enemy_spell_item.setPixmap(self.enemy_spell_movie.currentPixmap())
+            if frame_number == self.enemy_spell_movie.frameCount() - 1:
+                self.stop_enemy_spell_animation()
 
     def update_enemy_damage_frame(self, frame_number):
         self.enemy_damage_item.setPixmap(self.enemy_damage_movie.currentPixmap())
@@ -432,16 +486,42 @@ class BattleScene(QGraphicsView):
         self.is_attacking = True
 
     def play_spell_animation(self):
-        if self.is_casting or self.current_turn != 'player':
+        if self.is_casting or self.current_turn != 'player' or self.selected_spell is None:
+            return
+
+        spell = self.spells.get(self.selected_spell)
+        if spell is None:
+            print("Spell not found!")
+            self.set_spell_icons_active(True)
             return
 
         # Проверка и уменьшение маны персонажа
-        if self.character_mana < 5:  # Требуется 5 маны для заклинания
+        if self.character_mana < spell['cost']:
             print("Not enough mana!")
+            self.set_spell_icons_active(True)
             return
 
-        self.character_mana -= 5  # Уменьшаем ману
+        self.character_mana -= spell['cost']  # Уменьшаем ману
+        self.current_spell_damage = spell['damage']  # Сохраняем урон заклинания
         self.update_text_values()  # Обновляем отображение
+
+        # Загрузка анимации заклинания (кеширование)
+        animation_file = spell['animation']
+        if animation_file not in self.spell_animations:
+            movie = QMovie(f"assets/animations/{animation_file}")
+            if movie.isValid():
+                movie.setScaledSize(QSize(self.character_spell_width, self.character_spell_height))
+                self.spell_animations[animation_file] = movie
+            else:
+                print(f"Failed to load animation: {animation_file}")
+                self.set_spell_icons_active(True)
+                return
+        else:
+            movie = self.spell_animations[animation_file]
+
+        # Устанавливаем новую анимацию
+        self.spell_movie = movie
+        self.spell_movie.frameChanged.connect(self.update_spell_frame)
 
         self.spell_item.setVisible(True)
         self.spell_movie.start()
@@ -464,8 +544,8 @@ class BattleScene(QGraphicsView):
         if self.is_enemy_taking_damage:
             return
 
-        # Уменьшаем здоровье врага
-        self.enemy_health = max(0, self.enemy_health - 1)
+        # Уменьшаем здоровье врага на величину урона заклинания
+        self.enemy_health = max(0, self.enemy_health - self.current_spell_damage)
         self.update_text_values()
 
         self.enemy_item.setVisible(False)
@@ -487,8 +567,8 @@ class BattleScene(QGraphicsView):
         if self.is_character_taking_damage:
             return
 
-        # Уменьшаем здоровье персонажа
-        self.character_health = max(0, self.character_health - 1)
+        # Уменьшаем здоровье персонажа на величину урона заклинания
+        self.character_health = max(0, self.character_health - self.enemy_current_spell_damage)
         self.update_text_values()
 
         self.character_item.setVisible(False)
@@ -524,13 +604,49 @@ class BattleScene(QGraphicsView):
         if self.is_enemy_casting or self.current_turn != 'enemy':
             return
 
-        # Проверка и уменьшение маны противника
-        if self.enemy_mana < 5:  # Требуется 5 маны для заклинания
-            print("Enemy not enough mana!")
+        # Используем enemy_spells вместо spells
+        available_spells = []
+        for spell_key, spell_data in self.enemy_spells.items():
+            if self.enemy_mana >= spell_data['cost']:
+                available_spells.append((spell_key, spell_data))
+
+        if not available_spells:
+            print("Enemy has no mana to cast any spell. Ending enemy turn.")
+            self.end_enemy_turn()
             return
 
-        self.enemy_mana -= 5  # Уменьшаем ману
+        # Выбираем случайное заклинание из доступных
+        spell_key, spell_data = random.choice(available_spells)
+        self.enemy_selected_spell = spell_key
+        self.enemy_current_spell_damage = spell_data['damage']  # Сохраняем урон заклинания
+        print(f"Enemy casting spell: {spell_key}")
+
+        # Проверка и уменьшение маны противника
+        if self.enemy_mana < spell_data['cost']:
+            print("Enemy not enough mana!")
+            self.end_enemy_turn()
+            return
+
+        self.enemy_mana -= spell_data['cost']  # Уменьшаем ману
         self.update_text_values()  # Обновляем отображение
+
+        # Загрузка анимации заклинания (кеширование)
+        animation_file = spell_data['animation']
+        if animation_file not in self.spell_animations:
+            movie = QMovie(f"assets/animations/{animation_file}")
+            if movie.isValid():
+                movie.setScaledSize(QSize(self.enemy_spell_width, self.enemy_spell_height))
+                self.spell_animations[animation_file] = movie
+            else:
+                print(f"Failed to load animation: {animation_file}")
+                self.end_enemy_turn()
+                return
+        else:
+            movie = self.spell_animations[animation_file]
+
+        # Устанавливаем новую анимацию
+        self.enemy_spell_movie = movie
+        self.enemy_spell_movie.frameChanged.connect(self.update_enemy_spell_frame)
 
         self.enemy_spell_item.setVisible(True)
         self.enemy_spell_movie.start()
@@ -538,16 +654,22 @@ class BattleScene(QGraphicsView):
         self.is_enemy_casting = True
 
     def stop_enemy_spell_animation(self):
-        self.enemy_spell_movie.stop()
+        if hasattr(self, 'enemy_spell_movie') and self.enemy_spell_movie:
+            self.enemy_spell_movie.stop()
         self.enemy_spell_item.setVisible(False)
         self.is_enemy_casting = False
+
+        # После каста заклинания врагом, игрок получает урон
         self.play_character_damage_animation()
 
     def create_spell_panel(self):
         icon_size = 96
         margin = 500
         spacing = 15
-        panel_width = margin * 2 + icon_size * 5 + spacing * 4
+        spell_keys = list(self.spells.keys())
+
+        # Рассчитываем ширину панели на основе количества заклинаний
+        panel_width = margin * 2 + icon_size * len(spell_keys) + spacing * (len(spell_keys) - 1)
         panel_height = icon_size + 30
 
         panel_pixmap = QPixmap("assets/gui/spell_panel.png")
@@ -561,9 +683,10 @@ class BattleScene(QGraphicsView):
         ))
         self.scene().addItem(self.spell_panel)
 
-        for i in range(5):
+        for i, spell_key in enumerate(spell_keys):
             try:
-                icon_pixmap = QPixmap(f"assets/spells/spell_icon{i+1}.jpg")
+                spell = self.spells[spell_key]
+                icon_pixmap = QPixmap(f"assets/spells/{spell['icon']}")
                 if icon_pixmap.isNull():
                     icon_pixmap = QPixmap(icon_size, icon_size)
                     icon_pixmap.fill(Qt.red if i % 2 else Qt.blue)
@@ -571,24 +694,28 @@ class BattleScene(QGraphicsView):
                 icon = SpellIconItem(icon_pixmap.scaled(
                     icon_size, icon_size,
                     Qt.IgnoreAspectRatio, Qt.SmoothTransformation
-                ), i+1, self.spell_panel)
+                ), spell_key, self.spell_panel)
 
                 x_pos = margin + i * (icon_size + spacing)
                 icon.setPos(x_pos, 15)
                 icon.setAcceptHoverEvents(True)
 
                 # Добавляем обработчик клика
-                icon.mousePressEvent = lambda event, idx=i: self.handle_spell_click(idx)
+                icon.mousePressEvent = lambda event, key=spell_key: self.handle_spell_click(key)
                 self.scene().addItem(icon)
                 self.spell_icons.append(icon)
-            except:
-                print(f"Failed to load spell icon {i+1}")
+            except Exception as e:
+                print(f"Failed to load spell icon {spell_key}: {e}")
 
-    def handle_spell_click(self, spell_index):
-        if self.current_turn != 'player':
+    def handle_spell_click(self, spell_key):
+        # Проверяем, что ход игрока, нет активных анимаций и достаточно маны
+        if (self.current_turn != 'player' or
+            self.is_any_animation_running() or
+            not self.can_cast_spell(spell_key)):
             return
 
-        print(f"Spell {spell_index+1} clicked!")
+        print(f"Spell {spell_key} clicked!")
+        self.selected_spell = spell_key
         # Блокируем иконки сразу при касте
         self.set_spell_icons_active(False)
         # Запускаем анимацию атаки, которая затем перейдет в заклинание
@@ -637,16 +764,27 @@ class BattleScene(QGraphicsView):
         elif event.key() == Qt.Key_F11:
             self.toggle_fullscreen()
         elif event.key() in [Qt.Key_1, Qt.Key_2, Qt.Key_3, Qt.Key_4, Qt.Key_5]:
-            if self.current_turn != 'player':
+            # Проверяем, что ход игрока и нет активных анимаций
+            if (self.current_turn != 'player' or
+                self.is_any_animation_running()):
                 return
 
             # Преобразуем клавишу в индекс заклинания
             spell_index = event.key() - Qt.Key_1
-            print(f"Casting spell {spell_index+1} with key")
+            spell_keys = list(self.spells.keys())
 
-            # Блокируем иконки сразу
-            self.set_spell_icons_active(False)
-            self.play_attack_animation()
+            if spell_index < len(spell_keys):
+                spell_key = spell_keys[spell_index]
+
+                # Дополнительная проверка на наличие маны
+                if not self.can_cast_spell(spell_key):
+                    return
+
+                print(f"Casting spell {spell_key} with key")
+                self.selected_spell = spell_key
+                # Блокируем иконки сразу
+                self.set_spell_icons_active(False)
+                self.play_attack_animation()
         else:
             super().keyPressEvent(event)
 
@@ -687,14 +825,22 @@ class BattleScene(QGraphicsView):
         self.character_mana = min(self.character_mana_max, self.character_mana + 2)
         self.update_text_values()
 
-        # Разблокируем кнопки спеллов
+        # Разблокируем кнопки спеллов (с учетом маны)
         self.set_spell_icons_active(True)
 
+        # Сбрасываем выбранное заклинание врага
+        self.enemy_selected_spell = None
+
     def set_spell_icons_active(self, active):
-        """Активация/деактивация кнопок спеллов"""
+        """Активация/деактивация кнопок спеллов с учетом маны"""
         for icon in self.spell_icons:
-            icon.setEnabled(active)
-            icon.setOpacity(1.0 if active else 0.5)
+            # Проверяем доступность заклинания по мане
+            spell_available = self.can_cast_spell(icon.spell_id)
+
+            # Иконка активна только если разрешено глобально И достаточно маны
+            icon_active = active and spell_available
+            icon.setEnabled(icon_active)
+            icon.setOpacity(1.0 if icon_active else 0.5)
 
 
 class SpellIconItem(QGraphicsPixmapItem):

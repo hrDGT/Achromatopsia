@@ -1,6 +1,6 @@
 {
     "1": {
-        "background": "bg1.svg",
+        "background": "bg1.png",
         "character": "character1_1.png",
         "music": "theme1.mp3",
         "music_continue": true,
@@ -15,28 +15,30 @@
     },
     "3": {
         "background": "bg3.png",
-        "character": "character1_2.png",
+        "character": "character2_1.png",
         "music": "",
         "music_continue": true,
-        "text": "Текст третьей сцены."
+        "text": "Текст третьей сцены.",
+        "sound_effect": "character2_1.mp3"
     },
     "4": {
-        "background": "bg4.png",
+        "background": "bg3.png",
         "character": "character1_2.png",
         "music": "",
         "music_continue": true,
-        "text": "Текст четвертой сцены."
+        "text": "Текст четвертой сцены.",
+        "sound_effect": "character1_2.mp3"
     },
     "5": {
-        "background": "bg5.png",
-        "character": "character1_2.png",
+        "background": "bg3.png",
+        "character": "character1_3.png",
         "music": "",
         "music_continue": true,
         "text": "Текст пятой сцены."
     },
     "6": {
-        "background": "bg6.png",
-        "character": "character1_2.png",
+        "background": "bg3.png",
+        "character": "character1_3.png",
         "music": "",
         "music_continue": true,
         "text": "Текст шестой сцены."

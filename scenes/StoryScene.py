@@ -45,9 +45,14 @@ class StoryScene(QWidget):
             self.media_player = QMediaPlayer()
             self.media_player.setAudioOutput(self.audio_output)
 
+        self.effect_audio_output = QAudioOutput()
+        self.effect_player = QMediaPlayer()
+        self.effect_player.setAudioOutput(self.effect_audio_output)
+
         self.init_ui()
 
         self.play_scene_music(music_continue)
+        self.play_scene_sound_effect()
 
     def load_scenes_data(self):
         try:
@@ -180,9 +185,19 @@ class StoryScene(QWidget):
         transform.scale(scale, scale)
         self.character_item.setTransform(transform)
 
-        pos_x = view_size.width() * 0.55
+        scene_key = str(self.scene_number)
+        character_filename = self.scenes_data.get(scene_key, {}).get('character', '')
+
+        if character_filename.startswith('character1'):
+            # Place on the left
+            pos_x = view_size.width() * 0.05
+        else:
+            # Default: place on the right
+            pos_x = view_size.width() * 0.55
+
         pos_y = (view_size.height() - orig_height * scale)
         self.character_item.setPos(pos_x, pos_y)
+
 
 
     def add_textbox_layer(self):
@@ -465,3 +480,17 @@ class StoryScene(QWidget):
                 f.write(str(self.scene_number))
         except Exception as e:
             print(f"Ошибка при сохранении .autosave: {e}")
+
+    def play_scene_sound_effect(self):
+        scene_key = str(self.scene_number)
+        if scene_key in self.scenes_data:
+            effect_filename = self.scenes_data[scene_key].get('sound_effect')
+            if effect_filename:
+                effect_path = os.path.abspath(os.path.join('assets', 'sounds', effect_filename))
+                if os.path.exists(effect_path):
+                    url = QUrl.fromLocalFile(effect_path)
+                    self.effect_player.setSource(url)
+                    self.effect_audio_output.setVolume(1.0)  # можно подрегулировать
+                    self.effect_player.play()
+                else:
+                    print(f"Файл звукового эффекта не найден: {effect_path}")

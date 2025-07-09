@@ -1,6 +1,9 @@
 {
     "files": [
-        "battle_scene.py",
-        "main.py"
+        "battle_controller.py",
+        "battle_graphic.py",
+        "battle_logic.py",
+        "main.py",
+        "spell_icon.py"
     ]
 }

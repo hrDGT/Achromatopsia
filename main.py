@@ -25,7 +25,7 @@ if __name__ == "__main__":
     window.addWidget(initial_scene)
     window.setMinimumSize(800, 600)
     window.setWindowTitle("Achromatopsia")
-    window.setWindowIcon(QIcon("assets/icon2.png"))
+    window.setWindowIcon(QIcon("assets/icon.png"))
     window.show()
 
     sys.exit(app.exec())

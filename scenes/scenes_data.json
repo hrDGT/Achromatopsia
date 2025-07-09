@@ -1,151 +1,919 @@
 {
     "1": {
         "background": "bg1.png",
+        "character": "",
+        "music": "theme1.mp3",
+        "music_continue": true,
+        "text": "В каменном сердце башни Аль-Каррон, среди мозаичных окон, лилий-акрилов и калейдоскопов света, маг Арден Велорис чертил на пергаменте формулы спектрального слияния."
+    },
+    "2": {
+        "background": "bg1.png",
+        "character": "",
+        "music": "theme1.mp3",
+        "music_continue": true,
+        "text": "Лучи рассветного солнца преломлялись сквозь стекло, раскладываясь на тысячи оттенков — от алой меди до бирюзовой мглы."
+    },
+    "3": {
+        "background": "bg1.png",
+        "character": "",
+        "music": "theme1.mp3",
+        "music_continue": true,
+        "text": "Мир казался ему устойчивым, как гамма логики в уравнении времени."
+    },
+    "4": {
+        "background": "bg1.png",
         "character": "character1_1.png",
         "music": "theme1.mp3",
         "music_continue": true,
-        "text": "Это текст первой сцены."
-    },
-    "2": {
-        "background": "bg2.png",
-        "character": "character1_1.png",
-        "music": "",
-        "music_continue": true,
-        "text": "Текст для второй сцены."
-    },
-    "3": {
-        "background": "bg3.png",
-        "character": "character2_1.png",
-        "music": "",
-        "music_continue": true,
-        "text": "Текст третьей сцены.",
-        "sound_effect": "character2_1.mp3"
-    },
-    "4": {
-        "background": "bg3.png",
-        "character": "character1_2.png",
-        "music": "",
-        "music_continue": true,
-        "text": "Текст четвертой сцены.",
-        "sound_effect": "character1_2.mp3"
+        "text": "«Каждая волна имеет частоту. Каждая частота — эмоцию. А эмоции… мешают. Они искажают результат.»"
     },
     "5": {
-        "background": "bg3.png",
-        "character": "character1_3.png",
-        "music": "",
+        "background": "bg1.png",
+        "character": "character1_2.png",
+        "music": "theme1.mp3",
         "music_continue": true,
-        "text": "Текст пятой сцены."
+        "text": "Он гладил кончики пальцев, окутанные светом хрома, и чувствовал в них отголоски чистой магии — не страсти, не желания, а идеальной волны, синусоидальной и вечной."
     },
     "6": {
-        "background": "bg3.png",
-        "character": "character1_3.png",
-        "music": "",
+        "background": "bg2.png",
+        "character": "",
+        "music": "theme1.mp3",
         "music_continue": true,
-        "text": "Текст шестой сцены."
+        "text": "В ордене Хромантов его уважали — не за сердечность, а за ясность рассудка."
     },
     "7": {
-        "background": "bg7.png",
-        "character": "character1_2.png",
-        "music": "",
+        "background": "bg2.png",
+        "character": "",
+        "music": "theme1.mp3",
         "music_continue": true,
-        "text": "Текст седьмой сцены."
+        "text": "Говорили: «Арден — это спектр, в котором нет шума.» Он и сам в это верил."
     },
     "8": {
-        "background": "bg8.png",
-        "character": "character1_2.png",
-        "music": "",
+        "background": "bg3.png",
+        "character": "",
+        "music": "theme1.mp3",
         "music_continue": true,
-        "text": "Текст восьмой сцены."
+        "text": "Жил среди артефактов и трактатов, ел из чаши, выкованной из опалового кварца, и пил чай, меняющий цвет от настроения собеседника."
     },
     "9": {
-        "background": "bg9.png",
-        "character": "character1_2.png",
-        "music": "",
+        "background": "bg3.png",
+        "character": "",
+        "music": "theme1.mp3",
         "music_continue": true,
-        "text": "Текст девятой сцены."
+        "text": "Но однажды...."
     },
     "10": {
-        "background": "bg10.png",
-        "character": "character1_2.png",
-        "music": "",
+        "background": "bg4.png",
+        "character": "",
+        "music": "theme1.mp3",
         "music_continue": true,
-        "text": "Текст десятой сцены."
+        "text": "Красный кристалл на его рабочем столе — источник тепловой маны — мерцал тускло."
     },
     "11": {
-        "background": "bg11.png",
-        "character": "character1_2.png",
-        "music": "",
+        "background": "bg4.png",
+        "character": "character1_1.png",
+        "music": "theme1.mp3",
         "music_continue": true,
-        "text": "Текст одиннадцатой сцены."
+        "text": "Арден нахмурился, отметил возможную деградацию фокусного ядра, заменил руну, провёл восстановительное заклинание."
     },
     "12": {
-        "background": "bg12.png",
-        "character": "character1_2.png",
-        "music": "",
+        "background": "bg4.png",
+        "character": "character1_1.png",
+        "music": "theme1.mp3",
         "music_continue": true,
-        "text": "Текст двенадцатой сцены."
+        "text": "Но ничего не изменилось."
     },
     "13": {
-        "background": "bg13.png",
+        "background": "bg4.png",
         "character": "character1_2.png",
-        "music": "",
+        "music": "theme1.mp3",
         "music_continue": true,
-        "text": "Текст тринадцатой сцены."
+        "text": "«Странно… может быть, ошибка в формуле. Или кристалл загрязнён?»"
     },
     "14": {
-        "background": "bg14.png",
-        "character": "character1_2.png",
-        "music": "",
+        "background": "bg4.png",
+        "character": "",
+        "music": "theme1.mp3",
         "music_continue": true,
-        "text": "Текст четырнадцатой сцены."
+        "text": "Он отложил проблему до утра."
     },
     "15": {
-        "background": "bg15.png",
-        "character": "character1_2.png",
-        "music": "",
+        "background": "bg5.png",
+        "character": "",
+        "music": "theme1.mp3",
         "music_continue": true,
-        "text": "Текст пятнадцатой сцены."
+        "text": " "
     },
     "16": {
-        "background": "bg16.png",
-        "character": "character1_2.png",
-        "music": "",
+        "background": "bg6.png",
+        "character": "",
+        "music": "theme1.mp3",
         "music_continue": true,
-        "text": "Текст шестнадцатой сцены."
+        "text": " "
     },
     "17": {
-        "background": "bg17.png",
-        "character": "character1_2.png",
-        "music": "",
+        "background": "bg7.png",
+        "character": "",
+        "music": "theme2.mp3",
         "music_continue": true,
-        "text": "Текст семнадцатой сцены."
+        "text": "На следующее утро башня встретила его молчанием и пустотой. Арден проснулся, но в мире уже не было цвета."
     },
     "18": {
-        "background": "bg18.png",
-        "character": "character1_2.png",
-        "music": "",
+        "background": "bg7.png",
+        "character": "",
+        "music": "theme2.mp3",
         "music_continue": true,
-        "text": "Текст восемнадцатой сцены."
+        "text": "Изумрудная мана исчезла. Кристалл на столе выглядел не просто тусклым — он был серым, как камень, забывший тепло."
     },
     "19": {
-        "background": "bg19.png",
-        "character": "character1_2.png",
-        "music": "",
+        "background": "bg7.png",
+        "character": "",
+        "music": "theme2.mp3",
         "music_continue": true,
-        "text": "Текст девятнадцатой сцены."
+        "text": "Формулы, что вчера ещё пульсировали спектральной жизнью, стали мёртвыми штрихами."
     },
     "20": {
-        "background": "bg20.png",
-        "character": "character1_2.png",
-        "music": "",
+        "background": "bg8.png",
+        "character": "",
+        "music": "theme2.mp3",
         "music_continue": true,
-        "text": "Текст двадцатой сцены."
+        "text": "Он провёл рукой над свитками, надеясь на привычный отклик — но ни алого, ни зелёного, ни синего не появилось."
     },
     "21": {
-        "background": "bg21.png",
-        "character": "character1_2.png",
-        "music": "",
+        "background": "bg8.png",
+        "character": "",
+        "music": "theme2.mp3",
         "music_continue": true,
-        "text": "Текст двадцать первой сцены."
+        "text": "Всё погрузилось в оттенки серости, как будто палитра эмоций была стерта с его восприятия."
+    },
+    "22": {
+        "background": "bg9.png",
+        "character": "character1_2.png",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "«Словно кто-то вытер мой взгляд с холста,» — подумал он, всматриваясь в серое сияние, где раньше была магия."
+    },
+    "23": {
+        "background": "bg9.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Сны перестали вспыхивать красками. Эмоции утратили форму. Башня, когда-то живая, теперь стала только архитектурой — без света, без переживания, без себя."
+    },
+    "24": {
+        "background": "bg10.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Он пытался протестировать магические спектры на учениках — результат был тот же. Все цвета исчезали, едва он приближался."
+    },
+    "25": {
+        "background": "bg10.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Слухи поползли. «Цветовая гниль», — так называли его болезнь."
+    },
+    "26": {
+        "background": "bg10.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Его покои опустели. Люди сторонятся. Башня, некогда сияющая миллионом отражений, стала серой пустыней из камня и тени."
+    },
+    "27": {
+        "background": "bg11.png",
+        "character": "character1_3.png",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "«Цвет не просто свет. Это чувство, форма переживания. А если я не вижу цвета… что я тогда? Не маг. Не человек..."
+    },
+    "28": {
+        "background": "bg11.png",
+        "character": "character1_3.png",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Просто… расчет. Пустая формула. Я думал, освобождаю магию от страстей. Но, возможно… именно страсти питали её.»"
+    },
+    "29": {
+        "background": "bg11.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Он бродит по залам, вглядываясь в тусклый алтарь. Кристаллы мертвы. Мозаика осыпалась. И лишь один тон — унылый серый — заполнил всё."
+    },
+    "30": {
+        "background": "bg11.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "И тогда, впервые за годы, Арден произнес слова, не отмеченные логикой."
+    },
+    "31": {
+        "background": "bg11.png",
+        "character": "character1_4.png",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "«Я хочу… почувствовать. Я хочу увидеть. Я хочу вспомнить, как пел пурпур заката.»"
+    },
+    "32": {
+        "background": "bg12.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Мир башни Аль-Каррон погрузился в серое безмолвие. Зеркала больше не отражали оттенки — лишь блеклый контур действительности."
+    },
+    "33": {
+        "background": "bg12.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Арден сидел в полутёмной лаборатории, окружённый артефактами, чья яркость когда-то оживляла стены."
+    },
+    "34": {
+        "background": "bg12.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Теперь — безликие формы. Все заклинания стали ровной волной, без вибрации. Эмоции притупились до математической симметрии."
+    },
+    "35": {
+        "background": "bg12.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Он сидел перед зеркалом портала — когда-то это было окно в другие спектральные измерения. Сейчас оно казалось мёртвым, как застывшее озеро без отражения."
+    },
+    "36": {
+        "background": "bg13.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "И в ту самую ночь зеркало дрогнуло. Сначала — тонкая трещина света."
+    },
+    "37": {
+        "background": "bg13.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Затем — абсурдная тень, ломанная, неровная, словно кто-то пытался нарисовать силуэт без контура."
+    },
+    "38": {
+        "background": "bg13.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Существо возникло, не имея формы, но навязывая её сознанию."
+    },
+    "39": {
+        "background": "bg13.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Сторож Беспалитры."
+    },
+    "40": {
+        "background": "bg14.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Его голос не звучал — он проникал прямо в мысли:"
+    },
+    "41": {
+        "background": "bg14.png",
+        "character": "character2_1.png",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "«Ты сам отрезал себя от цвета. Искал истину в пустоте, отсекая чувства, страсть, страх и сомнение..."
+    },
+    "42": {
+        "background": "bg14.png",
+        "character": "character2_1.png",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Ты выжег душу, оставив только формулы. Но Цвет — это душа мира. А ты стал подходящей дверью...»"
+    },
+    "43": {
+        "background": "bg14.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Арден не ответил сразу. Он чувствовал, как внутри что-то дрожит. Не страх. Не интерес. Что-то более первичное — распад ощущений."
+    },
+    "44": {
+        "background": "bg14.png",
+        "character": "character1_4.png",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "«Я… хотел освободить магию. Сделать её чистой. Не подчинённой эмоциям.»"
+    },
+    "45": {
+        "background": "bg14.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Существо приближалось, его тело искривлялось, как зеркало в воде."
+    },
+    "46": {
+        "background": "bg14.png",
+        "character": "character2_1.png",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "«И стал инструментом. Абстрагат уже здесь. Он питается твоим отказом. Ты почти пуст.»"
+    },
+    "47": {
+        "background": "bg14.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "В этой тени он вдруг вспомнил: как смеялся когда-то в юности, как плакал над погибшим наставником, как сердце дрожало при первых экспериментах с маной чувств"
+    },
+    "48": {
+        "background": "bg14.png",
+        "character": "character1_3.png",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "«Цвет… это не шум. Это голос. Я заглушил его. А теперь — я сам бесцветен.»"
+    },
+    "49": {
+        "background": "bg15.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Сторож исчез, оставив лишь метку на зеркале — вихрь цвета, искрящийся в черноте. Это был путь. Путь обратно."
+    },
+    "50": {
+        "background": "bg15.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Арден подошёл. Ещё не решившись, но впервые за многие годы — почувствовав."
+    },
+    "51": {
+        "background": "bg15.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Он знал, что ему предстоит пережить всё, что он подавил: страхи, сожаления, радости, страсти. Чтобы вновь стать собой — не спектром, а человеком."
+    },
+    "52": {
+        "background": "bg0.jpg",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Когда Арден вошёл в зеркало, он не упал — он распался. Его тело рассыпалось на полтона, каждый шаг отзывался расщеплением сознания."
+    },
+    "53": {
+        "background": "bg16.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Место, куда он попал, напоминало руины небесной палитры: серые холмы, между которыми текли потоки цвета, не касающиеся земли — словно она больше не достойна их."
+    },
+    "54": {
+        "background": "bg16.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Он знал, что ему предстоит пережить всё, что он подавил: страхи, сожаления, радости, страсти. Чтобы вновь стать собой — не спектром, а человеком."
+    },
+    "55": {
+        "background": "bg16.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Ветер был его единственным проводником. Но здесь он не просто дул — он шептал голосами."
+    },
+    "56": {
+        "background": "bg17.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Из трещин в земле всплыла фигура, закутанная в глубокий алый, как бы собранная из фрагментов магмы, ткани и молитвы."
+    },
+    "57": {
+        "background": "bg17.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Это был не всплеск огня — это было его пережитое эхо. Огнесть стоял, не распаляясь — он знал, что Арден помнит."
+    },
+    "58": {
+        "background": "bg17.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Его плащ — пульсирующий, словно ткань, впитавшая страсть — отливал кармином, а капюшон, скрывающий черты, создавал эффект недосказанности."
+    },
+    "59": {
+        "background": "bg17.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Ладони, сцепленные перед собой, были не слабы — они таили жар, сжатый в форме."
+    },
+    "60": {
+        "background": "bg17.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Огнесть не атаковал сразу. Он смотрел — молча, без глаз, без жестов, но Арден чувствовал это зрение, как раскалённый металл у сердца."
+    },
+    "61": {
+        "background": "bg17.png",
+        "character": "character3_1.png",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "«Ты запер меня в ритуале. Сделал из красного формулу. Я был порывом, а стал схемой. Но ты же знаешь: алый не исчез — он затаился. И теперь я — здесь.»"
+    },
+    "62": {
+        "background": "bg17.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Воздух сгущался. Арден почувствовал, как ветер стягивается вокруг него в кольца. Он не мог обороняться — мог только понимать. Только почувствовать."
+    },
+    "63": {
+        "background": "bg17.png",
+        "character": "character3_1.png",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "«Ты не ошибся, что отказался от яркости. Ты ошибся, что забыл, как она звучит.»"
+    },
+    "64": {
+        "background": "bg17.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Огнесть шагнул, но пространство не дрогнуло. Его шаг был как пульсация краски — не движение, а давление."
+    },
+    "65": {
+        "background": "bg17.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Арден поднял руки — не для боя, а чтобы вернуть красному его голос. Возвратить форму чувству."
+    },
+    "66": {
+        "background": "bg17.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Огнесть металась, оставляя ожоги в пространстве. Арден направлял порывы так, чтобы красный переходил в розовый, потом в персиковый, потом в пустоту."
+    },
+    "67": {
+        "background": "bg17.png",
+        "character": "character1_1.png",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "«Я был серым. Но серый — это смесь. Я теперь — палитра. Пусть и не полная.»"
+    },
+    "68": {
+        "background": "bg18.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Огнесть не исчезла — она сжалась в сферу, в каплю цвета, что капнула на ладонь Ардена."
+    },
+    "69": {
+        "background": "bg18.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Теперь он носил метку — алую, сверкающую, пульсирующую от эмоций. Ветер одобрительно зашелестел: путь продолжался."
+    },
+    "70": {
+        "background": "bg18.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Но с этим отпечатком пришло нечто большее..."
+    },
+    "71": {
+        "background": "bg18.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Арден почувствовал лёгкое жжение, не обжигающее, а зовущие — как тепло забытой силы. Метка на ладони не просто сияла — она дышала в унисон с его сердцем."
+    },
+    "72": {
+        "background": "bg18.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "И вместе с этим дыханием ожили искры внутри него — ветви утраченного древа, отзывающиеся на цвет."
+    },
+    "73": {
+        "background": "bg18.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Арден вновь овладел магией огня. Не как стихией разрушения, а как языком эмоций. Алый стал его голосом — не яростным, а живым."
+    },
+    "74": {
+        "background": "bg18.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Он мог вызвать тепло там, где сердце стыло, и дать свет, когда разум блуждал в тени."
+    },
+    "75": {
+        "background": "bg0.jpg",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": " "
+    },
+    "76": {
+        "background": "bg19.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Перед ним раскинулась равнина, сверкающая льдистыми треугольниками."
+    },
+    "77": {
+        "background": "bg19.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Пространство здесь было геометричным — хрупким и идеально вымеренным. Цвета скользили по граням, как свет по льду, отказываясь проникнуть глубже."
+    },
+    "78": {
+        "background": "bg20.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "На центральной платформе стоял он — Фер’Равел, фигура, будто выточенная из стекла."
+    },
+    "79": {
+        "background": "bg20.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Лицо его закрыто маской с ровными линиями."
+    },
+    "80": {
+        "background": "bg20.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Его плащ колыхался, как иней в безветрие, отражая не оттенки — воспоминания."
+    },
+    "81": {
+        "background": "bg20.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Имя его было как мороз по коже — резкое, холодное, но звучное."
+    },
+    "82": {
+        "background": "bg21.png",
+        "character": "character4_1.png",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "«Пламя дало тебе силу, но ты станешь ей жертвой. Ты знаешь, что тепло ранит. Успокойся. Прими холод, как лекарство. Затихни. Исчезни.»"
+    },
+    "83": {
+        "background": "bg21.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Арден шагнул ближе, ветра вокруг стали плотнее. Они пытались оттолкнуть, но он не отступал."
+    },
+    "84": {
+        "background": "bg21.png",
+        "character": "character1_1.png",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "«Я пытался забыть... заморозить эмоции, упорядочить себя. Но ты — не покой. Ты — остановка.»"
+    },
+    "85": {
+        "background": "bg22.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Фер'Равел поднял руку — пространство вокруг стало вязким. Снег ложился слоями на саму память."
+    },
+    "86": {
+        "background": "bg22.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Арден вспомнил: взгляд наставника в последний день, холод одиночества, страх признания."
+    },
+    "87": {
+        "background": "bg22.png",
+        "character": "character1_5.png",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "«Ты предлагаешь покой, но без смысла. Я приму синий — но он будет моим.»"
+    },
+    "88": {
+        "background": "bg0.jpg",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Арден закрыл глаза — в его руках ожила вторая стихия. Магия льда вернулась."
+    },
+    "89": {
+        "background": "bg23.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Не как отрешённость, а как ясность."
+    },
+    "90": {
+        "background": "bg23.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Он чувствовал, как синий и алый балансируют внутри, как дыхание и пульс, как страх и решимость."
+    },
+    "91": {
+        "background": "bg23.png",
+        "character": "character1_6.png",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "«Теперь ты — часть моей палитры.»"
+    },
+    "92": {
+        "background": "bg0.jpg",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": " "
+    },
+    "93": {
+        "background": "bg24.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Когда лёд растаял, осталась пустота — не тьма, а ослепляющая прозрачность."
+    },
+    "94": {
+        "background": "bg24.png",
+        "character": "character1_6.png",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Арден шёл дальше, ведомый ветром, который теперь колебался между прохладой синего и пульсом алого."
+    },
+    "95": {
+        "background": "bg24.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Вдруг пространство начало теплеть — не физически, а на уровне восприятия."
+    },
+    "96": {
+        "background": "bg24.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Границы стали зыбкими, линии — переливчатыми, и над горизонтом запульсировало золотое свечение."
+    },
+    "97": {
+        "background": "bg25.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Путь вывел его в долину света — пространство без тени."
+    },
+    "98": {
+        "background": "bg25.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Склоны были усыпаны переливающимися кристаллами янтаря, воздух дрожал как свет через воду, а само небо казалось сделанным из тонких нитей сияния."
+    },
+    "99": {
+        "background": "bg25.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Но чем ближе он подходил, тем настойчивее ощущал: здесь свет не освещает — он судит."
+    },
+    "100": {
+        "background": "bg26.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "В центре пространства, среди арок из лучей, парила она — Эл’Каэлла, чья форма была собрана не из тела, а из направленного света."
+    },
+    "101": {
+        "background": "bg26.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Её лицо сияло мягко, но ослепительно, а в руках — жезл света, чья яркость казалась разумной. Он не горел — он измерял."
+    },
+    "102": {
+        "background": "bg25.png",
+        "character": "character5_1.png",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "«Ты победил Тьму, но носишь её следы. Вернул холод, но сохранил огонь. Думаешь, это делает тебя целым? Ты всё ещё тусклый.»"
+    },
+    "103": {
+        "background": "bg25.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Арден не ответил сразу. Свет в её присутствии отказывался ложиться на него — будто выталкивал."
+    },
+    "104": {
+        "background": "bg25.png",
+        "character": "character1_2.png",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "«Ты не цвет. Ты — контроль. Ты превращаешь сияние в приговор.»"
+    },
+    "105": {
+        "background": "bg25.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Эл’Каэлла приблизилась. Не двигаясь — смещаясь, как точка источника. Свет вокруг неё изменял архитектуру пространства."
+    },
+    "106": {
+        "background": "bg25.png",
+        "character": "character5_2.png",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "«Жёлтый — это ясность, и ты её боишься. Ты прячешься за сложностью. За смесью. Но свет требует простоты. Покажи свою суть — без теней, без оттенков.»"
+    },
+    "107": {
+        "background": "bg25.png",
+        "character": "character1_6.png",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "«Я не идеален. Но я существую. Я — спектр, и ты теперь часть его.»"
+    },
+    "108": {
+        "background": "bg25.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Свет Эл’Каэллы перестал жечь — начал светить."
+    },
+    "109": {
+        "background": "bg27.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "На руке Ардена вспыхнула третья метка — тонкая золотая линия, дрожащая, как утреннее солнце."
+    },
+    "110": {
+        "background": "bg27.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Он овладел магией света."
+    },
+    "111": {
+        "background": "bg27.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Эл’Каэлла рассеялась, как солнечное дуновение. А Арден — шагнул в новую область. С палитрой огня, льда и света."
+    },
+    "112": {
+        "background": "bg0.jpg",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": " "
+    },
+    "113": {
+        "background": "bg28.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Жёлтый утих — но не исчез. Он стал напоминанием: свет может быть судом, но и прозрением."
+    },
+    "114": {
+        "background": "bg28.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Арден двигался дальше — теперь с трепетом, который не был страхом, а ожиданием."
+    },
+    "115": {
+        "background": "bg28.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Ветер шептал тише. Цвета вдали перестали сиять — начали тонуть. Пространство гасло не в тьме, а в тяжести."
+    },
+    "116": {
+        "background": "bg28.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Ему открылся пейзаж — не просто мрачный, а внутренне тёмный: лунный свет проливался сквозь облака, но не касался земли."
+    },
+    "117": {
+        "background": "bg28.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Вершины гор затаились, воздух был сухим, звенящим. Земля — треснутая, как кожа памяти, а небеса — разбитое стекло мира, что забыл надежду."
+    },
+    "118": {
+        "background": "bg28.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Здесь фиолетовый не был цветом. Он был абстракцией подавленного чувства — смесью одиночества, желания и тайного страха."
+    },
+    "119": {
+        "background": "bg29.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Повелитель Тьмы — Мораэн"
+    },
+    "120": {
+        "background": "bg29.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Он стоял среди пепла — фигура в тяжёлом капюшоне, обрамлённая пурпуром, но не сияющим, а вязким."
+    },
+    "121": {
+        "background": "bg29.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Из-под капюшона — один глаз, алый, неподвижный. В руках — изогнутое лезвие, будто из мысли, скрученной в отчаянии."
+    },
+    "122": {
+        "background": "bg29.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Мораэн не шёл — он был. Его голос не касался ушей, а проникал в сны:"
+    },
+    "123": {
+        "background": "bg28.png",
+        "character": "character6_1.png",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "«Ты носишь свет, но в основе — страх. Твои цвета живут на поверхности. Я — то, что ты не осмелился вспомнить. Я — глубина.»"
+    },
+    "124": {
+        "background": "bg28.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Арден сжал ладонь, на которой светилась жёлтая метка. Но она не грела. Здесь она терялась."
+    },
+    "125": {
+        "background": "bg28.png",
+        "character": "character1_5.png",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "«Ты — не истина. Ты — бездна, которая хочет быть зеркалом. Но я научился смотреть вглубь.»"
+    },
+    "126": {
+        "background": "bg28.png",
+        "character": "character1_4.png",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "«Фиолетовый — это не враг. Это то, что я боялся чувствовать. Это — уязвимость. И она — часть меня.»"
+    },
+    "127": {
+        "background": "bg28.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Мораэн не рассыпался — он отступил внутрь. В глаз его — вспыхнул мягкий свет, не победы, а признания."
+    },
+    "128": {
+        "background": "bg30.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Из земли поднялся тонкий луч — не яркий, а глубокий, фиолетовый. Он вился и коснулся груди Ардена — метка появилась. Не как вспышка, а как тень, принятая сердцем."
+    },
+    "129": {
+        "background": "bg30.png",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "Арден овладел магией фиолетового. Как призыв к честности перед собой. Как принятие несовершенства. Как шаг к полноте."
+    },
+    "130": {
+        "background": "bg30.png",
+        "character": "character1_6.png",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": "«Теперь и ты — часть моей палитры.»"
+    },
+    "131": {
+        "background": "bg0.jpg",
+        "character": "",
+        "music": "theme2.mp3",
+        "music_continue": true,
+        "text": " "
     }
 }

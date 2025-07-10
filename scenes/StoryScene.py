@@ -10,12 +10,15 @@ from PySide6.QtCore import Qt, QUrl, QEvent, QTimer
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 from PySide6.QtSvgWidgets import QGraphicsSvgItem
 
+BATTLE_SCENES = [65, 87, 106, 125, 146, 159]
+
 class StoryScene(QWidget):
     def __init__(self, scene_number=1, parent=None, media_player=None, audio_output=None,
-                 min_allowed_scene=None, max_allowed_scene=None):
+                 min_allowed_scene=None, max_allowed_scene=None, enemies_data=None):
         super().__init__(parent)
         self.scene_number = scene_number
         self.scenes_data = self.load_scenes_data()
+        self.enemies_data = enemies_data or {}
         self.background_item = None
         self.character_item = None
         self.text_rect_item = None
@@ -130,7 +133,6 @@ class StoryScene(QWidget):
         self.background_item.setTransform(transform)
 
         self.background_item.setPos(0, 0)
-
         self.scene.setSceneRect(0, 0, view_size.width(), view_size.height())
 
 
@@ -318,23 +320,23 @@ class StoryScene(QWidget):
 
 
     def go_to_next_scene(self):
-        new_scene_number = self.scene_number + 1
-        new_scene_key = str(new_scene_number)
-
-        if self.scene_number < 15:
-            min_allowed = 1
-            max_allowed = new_scene_number
+        # Проверяем, является ли текущая сцена боевой
+        if self.scene_number in BATTLE_SCENES:
+            self.start_spell_selection()
         else:
-            min_allowed = new_scene_number - 20 + 1
-            max_allowed = new_scene_number
+            new_scene_number = self.scene_number + 1
+            self.create_new_scene(new_scene_number)
+
+    def create_new_scene(self, new_scene_number):
 
         new_scene = StoryScene(
             new_scene_number,
             parent=self.parent(),
             media_player=self.media_player,
             audio_output=self.audio_output,
-            min_allowed_scene=min_allowed,
-            max_allowed_scene=max_allowed
+            min_allowed_scene=self.min_allowed_scene,
+            max_allowed_scene=self.max_allowed_scene,
+            enemies_data=self.enemies_data
         )
 
         if self.parent() is not None:
@@ -482,7 +484,8 @@ class StoryScene(QWidget):
             media_player=self.media_player,
             audio_output=self.audio_output,
             min_allowed_scene=self.min_allowed_scene,
-            max_allowed_scene=self.max_allowed_scene
+            max_allowed_scene=self.max_allowed_scene,
+            enemies_data=self.enemies_data
         )
 
         if self.parent() is not None:
@@ -513,3 +516,70 @@ class StoryScene(QWidget):
             self.text_timer.stop()
             if self.continue_hint_item:
                 self.continue_hint_item.setVisible(True)
+
+
+    def start_spell_selection(self):
+        # Определяем номер врага на основе номера сцены
+        battle_index = BATTLE_SCENES.index(self.scene_number)
+        enemy_id = str(battle_index + 1)
+        enemy_data = self.enemies_data.get(enemy_id, {})
+
+        # Создаем виджет выбора заклинаний
+        spell_selection_widget = StaticBattleWidget(
+            enemy_data=enemy_data,
+            parent=self.parent()
+        )
+
+        # Подключаем обработчик завершения выбора
+        spell_selection_widget.battleReady.connect(
+            lambda spells: self.start_battle(spells, enemy_data)
+        )
+
+        # Добавляем в стек и переключаемся
+        if self.parent() is not None:
+            self.parent().addWidget(spell_selection_widget)
+            self.parent().setCurrentWidget(spell_selection_widget)
+
+    def start_battle(self, selected_spells, enemy_data):
+        # Создаем окно боя
+        battle_window = BattleWindow(
+            scene_number=self.scene_number,
+            player_spells=selected_spells,
+            enemy_data=enemy_data
+        )
+
+        # Подключаем обработчик завершения боя
+        battle_window.battle_finished.connect(self.handle_battle_result)
+
+        # Добавляем в стек и переключаемся
+        if self.parent() is not None:
+            self.parent().addWidget(battle_window)
+            self.parent().setCurrentWidget(battle_window)
+
+    def handle_battle_result(self, victory):
+        # Определяем следующую сцену
+        if victory:
+            next_scene = self.scene_number + 1
+        else:
+            next_scene = max(1, self.scene_number - 5)
+
+        # Создаем новую сцену истории
+        new_scene = StoryScene(
+            next_scene,
+            parent=self.parent(),
+            media_player=self.media_player,
+            audio_output=self.audio_output,
+            min_allowed_scene=self.min_allowed_scene,
+            max_allowed_scene=self.max_allowed_scene,
+            enemies_data=self.enemies_data
+        )
+
+        # Показываем новую сцену
+        if self.parent() is not None:
+            self.parent().addWidget(new_scene)
+            self.parent().setCurrentWidget(new_scene)
+        else:
+            new_scene.show()
+
+        # Сохраняем автосейв
+        self.save_autosave(next_scene)

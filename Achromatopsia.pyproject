@@ -1,6 +1,12 @@
 {
     "files": [
+        "spell_icon.py",
         "main.py",
-        "scenes/StoryScene.py"
+        "battle_controller.py",
+        "battle_graphic.py",
+        "battle_logic.py",
+        "scenes/StoryScene.py",
+        "static_scene.py",
+        ".autosave"
     ]
 }

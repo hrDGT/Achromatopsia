@@ -9,6 +9,8 @@ from PySide6.QtGui import QPixmap, QColor, QFont
 from PySide6.QtCore import Qt, QUrl, QEvent, QTimer
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 from PySide6.QtSvgWidgets import QGraphicsSvgItem
+from battle_controller import BattleWindow
+from static_scene import StaticBattleWidget
 
 BATTLE_SCENES = [65, 87, 106, 125, 146, 159]
 
@@ -54,9 +56,7 @@ class StoryScene(QWidget):
             self.media_player.setAudioOutput(self.audio_output)
 
         self.init_ui()
-
         self.play_scene_music()
-
 
     def load_scenes_data(self):
         try:
@@ -65,7 +65,6 @@ class StoryScene(QWidget):
         except Exception as e:
             print(f"Ошибка при загрузке scenes_data.json: {e}")
             return {}
-
 
     def init_ui(self):
         layout = QVBoxLayout()
@@ -84,18 +83,14 @@ class StoryScene(QWidget):
         self.add_textbox_layer()
 
         layout.addWidget(self.view, 4)
-
         self.setLayout(layout)
 
         self.view.resizeEvent = self.on_view_resize
         self.view.installEventFilter(self)
-
         self.setFocusPolicy(Qt.StrongFocus)
-
 
     def add_background_layer(self):
         self.background_item = QGraphicsPixmapItem()
-
         scene_key = str(self.scene_number)
 
         if scene_key in self.scenes_data:
@@ -114,7 +109,6 @@ class StoryScene(QWidget):
                 else:
                     print(f"Файл фона не найден: {full_path}")
 
-
     def update_background_scale(self):
         if self.background_item is None:
             return
@@ -131,10 +125,8 @@ class StoryScene(QWidget):
         transform = QTransform()
         transform.scale(scale_x, scale_y)
         self.background_item.setTransform(transform)
-
         self.background_item.setPos(0, 0)
         self.scene.setSceneRect(0, 0, view_size.width(), view_size.height())
-
 
     def add_character_layer(self):
         scene_key = str(self.scene_number)
@@ -155,7 +147,6 @@ class StoryScene(QWidget):
 
         self.scene.addItem(self.character_item)
         self.update_character_scale_and_position()
-
 
     def update_character_scale_and_position(self):
         if self.character_item is None:
@@ -194,7 +185,6 @@ class StoryScene(QWidget):
         pos_y = (view_size.height() - orig_height * scale)
         self.character_item.setPos(pos_x, pos_y)
 
-
     def add_textbox_layer(self):
         scene_key = str(self.scene_number)
         text = self.scenes_data.get(scene_key, {}).get('text', '')
@@ -232,7 +222,6 @@ class StoryScene(QWidget):
         self.continue_hint_item.setVisible(False)
 
         self.update_textbox_layout()
-
 
     def update_textbox_layout(self):
         if self.text_rect_item is None or self.text_item is None:
@@ -283,7 +272,6 @@ class StoryScene(QWidget):
 
             self.continue_hint_item.setPos(hint_x, hint_y)
 
-
     def play_scene_music(self):
         scene_key = str(self.scene_number)
         music_filename = self.scenes_data.get(scene_key, {}).get('music', None)
@@ -306,7 +294,6 @@ class StoryScene(QWidget):
         else:
             self.media_player.stop()
 
-
     def on_view_resize(self, event):
         self.update_background_scale()
         self.update_character_scale_and_position()
@@ -318,7 +305,6 @@ class StoryScene(QWidget):
             self.scene_list_widget.setGeometry(margin, margin, width, height)
         super(QGraphicsView, self.view).resizeEvent(event)
 
-
     def go_to_next_scene(self):
         # Проверяем, является ли текущая сцена боевой
         if self.scene_number in BATTLE_SCENES:
@@ -328,7 +314,6 @@ class StoryScene(QWidget):
             self.create_new_scene(new_scene_number)
 
     def create_new_scene(self, new_scene_number):
-
         new_scene = StoryScene(
             new_scene_number,
             parent=self.parent(),
@@ -347,7 +332,6 @@ class StoryScene(QWidget):
             self.close()
 
         self.save_autosave(scene_number=new_scene_number)
-
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Space:
@@ -368,7 +352,6 @@ class StoryScene(QWidget):
         else:
             super().keyPressEvent(event)
 
-
     def mousePressEvent(self, event):
         if self.arrow_item and self.arrow_item.isUnderMouse():
             if self.text_timer.isActive():
@@ -380,7 +363,6 @@ class StoryScene(QWidget):
                 self.go_to_next_scene()
         else:
             super().mousePressEvent(event)
-
 
     def eventFilter(self, obj, event):
         if obj == self.view and event.type() == QEvent.KeyPress:
@@ -397,7 +379,6 @@ class StoryScene(QWidget):
                    self.showing_all_scenes = True
                return True
         return super().eventFilter(obj, event)
-
 
     def show_all_scenes_text(self):
         if self.scene_list_widget is None:
@@ -444,7 +425,6 @@ class StoryScene(QWidget):
         if self.arrow_item:
             self.arrow_item.hide()
 
-
     def restore_scene_text(self):
         if self.scene_list_widget:
             self.scene_list_widget.hide()
@@ -465,13 +445,11 @@ class StoryScene(QWidget):
 
         self.setFocus()
 
-
     def on_scene_list_item_clicked(self, item: QListWidgetItem):
         scene_number = item.data(Qt.UserRole)
         self.scene_list_widget.hide()
         self.showing_all_scenes = False
         self.go_to_specific_scene(scene_number)
-
 
     def go_to_specific_scene(self, scene_number):
         if not (self.min_allowed_scene <= scene_number <= self.max_allowed_scene):
@@ -497,7 +475,6 @@ class StoryScene(QWidget):
 
         self.save_autosave(scene_number=scene_number)
 
-
     def save_autosave(self, scene_number=None):
         try:
             if scene_number is None:
@@ -507,7 +484,6 @@ class StoryScene(QWidget):
         except Exception as e:
             print(f"Ошибка при сохранении .autosave: {e}")
 
-
     def type_next_character(self):
         if len(self.current_text) < len(self.full_text):
             self.current_text += self.full_text[len(self.current_text)]
@@ -516,7 +492,6 @@ class StoryScene(QWidget):
             self.text_timer.stop()
             if self.continue_hint_item:
                 self.continue_hint_item.setVisible(True)
-
 
     def start_spell_selection(self):
         # Определяем номер врага на основе номера сцены

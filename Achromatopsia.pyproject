@@ -1,5 +1,6 @@
 {
     "files": [
-        "main.py"
+        "main.py",
+        "scenes/StoryScene.py"
     ]
 }

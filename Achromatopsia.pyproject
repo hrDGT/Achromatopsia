@@ -1,10 +1,12 @@
 {
     "files": [
-        "battle_project/battle_controller.py",
-        "battle_project/battle_graphic.py",
-        "battle_project/battle_logic.py",
-        "battle_project/main.py",
         "spell_icon.py",
-        "main.py"
+        "main.py",
+        "battle_controller.py",
+        "battle_graphic.py",
+        "battle_logic.py",
+        "scenes/StoryScene.py",
+        "static_scene.py",
+        ".autosave"
     ]
 }

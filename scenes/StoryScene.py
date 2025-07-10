@@ -520,7 +520,8 @@ class StoryScene(QWidget):
         battle_window = BattleWindow(
             scene_number=self.scene_number,
             player_spells=selected_spells,
-            enemy_data=enemy_data
+            enemy_data=enemy_data,
+            parent=self.parent()
         )
 
         # Подключаем обработчик завершения боя
@@ -530,7 +531,6 @@ class StoryScene(QWidget):
         if self.parent() is not None:
             self.parent().addWidget(battle_window)
             self.parent().setCurrentWidget(battle_window)
-
     def handle_battle_result(self, victory):
         # Определяем следующую сцену
         if victory:

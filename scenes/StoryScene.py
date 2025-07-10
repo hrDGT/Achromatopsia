@@ -12,7 +12,7 @@ from PySide6.QtSvgWidgets import QGraphicsSvgItem
 
 class StoryScene(QWidget):
     def __init__(self, scene_number=1, parent=None, media_player=None, audio_output=None,
-                 music_continue=False, min_allowed_scene=None, max_allowed_scene=None):
+                 min_allowed_scene=None, max_allowed_scene=None):
         super().__init__(parent)
         self.scene_number = scene_number
         self.scenes_data = self.load_scenes_data()
@@ -52,7 +52,8 @@ class StoryScene(QWidget):
 
         self.init_ui()
 
-        self.play_scene_music(music_continue)
+        self.play_scene_music()
+
 
     def load_scenes_data(self):
         try:
@@ -184,15 +185,12 @@ class StoryScene(QWidget):
         character_filename = self.scenes_data.get(scene_key, {}).get('character', '')
 
         if character_filename.startswith('character1'):
-            # Place on the left
             pos_x = view_size.width() * 0.05
         else:
-            # Default: place on the right
             pos_x = view_size.width() * 0.55
 
         pos_y = (view_size.height() - orig_height * scale)
         self.character_item.setPos(pos_x, pos_y)
-
 
 
     def add_textbox_layer(self):
@@ -225,7 +223,7 @@ class StoryScene(QWidget):
             print(f"SVG стрелки не найден: {arrow_path}")
 
         self.continue_hint_item = QGraphicsTextItem()
-        hint_text = 'Нажмите <i>пробел</i> для продолжения'
+        hint_text = 'Нажмите <i>пробел</i> для продолжения или <i>tab</i> для просмотра истории'
         self.continue_hint_item.setHtml(f'<span style="color: orange;">{hint_text}</span>')
         self.continue_hint_item.setZValue(2)
         self.scene.addItem(self.continue_hint_item)
@@ -249,17 +247,14 @@ class StoryScene(QWidget):
 
         self.text_rect_item.setRect(x, y, width, height)
 
-        # Устанавливаем ширину текста (оставляем место для отступов)
         self.text_item.setTextWidth((width - 2 * padding) * 0.90)
 
-        # Адаптивный размер шрифта
         base_font_size = height * 0.15
         font = QFont("Arial", int(base_font_size))
         self.text_item.setFont(font)
 
         self.text_item.setPos(x + padding, y + padding * 1.5)
 
-        # Позиция стрелки
         if self.arrow_item:
             arrow_width = 50
             arrow_height = 50
@@ -274,7 +269,7 @@ class StoryScene(QWidget):
             self.arrow_item.setPos(arrow_x, arrow_y)
 
         if self.continue_hint_item:
-            hint_font_size = height * 0.12  # немного меньше основного текста
+            hint_font_size = height * 0.12
             font = QFont("Arial", int(hint_font_size))
             self.continue_hint_item.setFont(font)
 
@@ -287,8 +282,7 @@ class StoryScene(QWidget):
             self.continue_hint_item.setPos(hint_x, hint_y)
 
 
-
-    def play_scene_music(self, music_continue=False):
+    def play_scene_music(self):
         scene_key = str(self.scene_number)
         music_filename = self.scenes_data.get(scene_key, {}).get('music', None)
 
@@ -298,9 +292,8 @@ class StoryScene(QWidget):
                 music_url = QUrl.fromLocalFile(music_path)
                 current_url = self.media_player.source()
 
-                if music_continue and current_url == music_url and \
-                   self.media_player.playbackState() == QMediaPlayer.PlayingState:
-                    return  # Don't restart music
+                if current_url == music_url and self.media_player.playbackState() == QMediaPlayer.PlayingState:
+                    return
 
                 self.media_player.setSource(music_url)
                 self.audio_output.setVolume(0.5)
@@ -309,10 +302,7 @@ class StoryScene(QWidget):
             else:
                 print(f"Музыкальный файл не найден: {music_path}")
         else:
-            if not music_continue:
-                self.media_player.stop()
-
-
+            self.media_player.stop()
 
 
     def on_view_resize(self, event):
@@ -331,10 +321,6 @@ class StoryScene(QWidget):
         new_scene_number = self.scene_number + 1
         new_scene_key = str(new_scene_number)
 
-        music_continue = False
-        if new_scene_key in self.scenes_data:
-            music_continue = self.scenes_data[new_scene_key].get('music_continue', False)
-
         if self.scene_number < 15:
             min_allowed = 1
             max_allowed = new_scene_number
@@ -347,7 +333,6 @@ class StoryScene(QWidget):
             parent=self.parent(),
             media_player=self.media_player,
             audio_output=self.audio_output,
-            music_continue=music_continue,
             min_allowed_scene=min_allowed,
             max_allowed_scene=max_allowed
         )
@@ -380,7 +365,6 @@ class StoryScene(QWidget):
                 self.showing_all_scenes = True
         else:
             super().keyPressEvent(event)
-
 
 
     def mousePressEvent(self, event):
@@ -441,8 +425,6 @@ class StoryScene(QWidget):
                     item.setData(Qt.UserRole, scene_id)
                     self.scene_list_widget.addItem(item)
 
-
-        # Обновляем размер и позицию при каждом показе
         margin = 40
         width = self.view.width() - 2 * margin
         height = self.view.height() - 160
@@ -459,7 +441,6 @@ class StoryScene(QWidget):
         self.text_rect_item.hide()
         if self.arrow_item:
             self.arrow_item.hide()
-
 
 
     def restore_scene_text(self):
@@ -495,17 +476,11 @@ class StoryScene(QWidget):
             print(f"Переход на сцену {scene_number} запрещен.")
             return
 
-        music_continue = False
-        scene_key = str(scene_number)
-        if scene_key in self.scenes_data:
-            music_continue = self.scenes_data[scene_key].get('music_continue', False)
-
         new_scene = StoryScene(
             scene_number,
             parent=self.parent(),
             media_player=self.media_player,
             audio_output=self.audio_output,
-            music_continue=music_continue,
             min_allowed_scene=self.min_allowed_scene,
             max_allowed_scene=self.max_allowed_scene
         )

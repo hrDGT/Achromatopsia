@@ -104,8 +104,8 @@
         "holy_spell2": {
         "icon": "holy_spell2.png",
         "animation": "E_holy_spell2.gif",
-        "damage": "9",
-        "cost": "11"
+        "damage": "2",
+        "cost": "0"
         },
         "holy_spell3": {
         "icon": "holy_spell3.png",
@@ -116,7 +116,7 @@
         "holy_spell4": {
         "icon": "holy_spell4.png",
         "animation": "E_holy_spell4.gif",
-        "damage": "2",
-        "cost": "0"
+        "damage": "9",
+        "cost": "11"
         }
 }

@@ -498,16 +498,20 @@ class StoryScene(QWidget):
         battle_index = BATTLE_SCENES.index(self.scene_number)
         enemy_id = str(battle_index + 1)
         enemy_data = self.enemies_data.get(enemy_id, {})
+        
+        # Вычисляем количество доступных заклинаний (4 на каждый бой)
+        max_spells = (battle_index + 1) * 4
 
         # Создаем виджет выбора заклинаний
         spell_selection_widget = StaticBattleWidget(
             enemy_data=enemy_data,
+            max_spells=max_spells,
             parent=self.parent()
         )
 
         # Подключаем обработчик завершения выбора
         spell_selection_widget.battleReady.connect(
-            lambda spells: self.start_battle(spells, enemy_data)
+            lambda spells: self.start_battle(spells, enemy_data, max_spells)
         )
 
         # Добавляем в стек и переключаемся
@@ -515,12 +519,14 @@ class StoryScene(QWidget):
             self.parent().addWidget(spell_selection_widget)
             self.parent().setCurrentWidget(spell_selection_widget)
 
-    def start_battle(self, selected_spells, enemy_data):
+    def start_battle(self, selected_spells, enemy_data, max_spells):
         # Создаем окно боя
         battle_window = BattleWindow(
             scene_number=self.scene_number,
             player_spells=selected_spells,
-            enemy_data=enemy_data
+            enemy_data=enemy_data,
+            max_spells=max_spells,
+            parent=self.parent()
         )
 
         # Подключаем обработчик завершения боя

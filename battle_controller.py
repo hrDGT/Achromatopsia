@@ -18,7 +18,7 @@ from PySide6.QtCore import QUrl
 class BattleWindow(QWidget):
     battle_finished = Signal(bool)
 
-    def __init__(self, scene_number, player_spells, enemy_data, parent=None) -> None:
+    def __init__(self, scene_number, player_spells, enemy_data, max_spells, parent=None) -> None:
         super().__init__(parent)
         self.scene_number = scene_number
         self.player_spells = player_spells
@@ -33,7 +33,8 @@ class BattleWindow(QWidget):
         # ------------ модель + вид ------------ #
         self.state = BattleState(
             player_spell_keys=player_spells,
-            enemy_data=enemy_data
+            enemy_data=enemy_data,
+            max_spells=max_spells
         )
         self.view = BattleView(self.state, self.enemy_data.get('background', 'battle.png'))
 

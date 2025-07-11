@@ -42,7 +42,8 @@ class BattleState:
         spell_file: str = "assets/spells/spells.json",
         enemy_spell_file: str = "assets/spells/enemy_spells.json",
         player_spell_keys: Optional[List[str]] = None,
-        enemy_data: Optional[Dict] = None
+        enemy_data: Optional[Dict] = None,
+        max_spells: int = 4
     ) -> None:
         # здоровье / мана
         self.player_hp = self.MAX_HEALTH
@@ -58,10 +59,12 @@ class BattleState:
 
         # заклинания игрока
         all_spells = self._load_spells(spell_file)
+        spell_keys = list(all_spells.keys())[:max_spells]  # Ограничиваем количество
+        
         if player_spell_keys:
-            self.spells = {k: v for k, v in all_spells.items() if k in player_spell_keys}
+            self.spells = {k: v for k, v in all_spells.items() if k in player_spell_keys and k in spell_keys}
         else:
-            self.spells = all_spells
+            self.spells = {k: all_spells[k] for k in spell_keys}
 
         # заклинания врага
         self.enemy_spells = self._load_enemy_spells(enemy_data, enemy_spell_file)

@@ -23,7 +23,7 @@ GAME_W, GAME_H = 1600, 900
 ICON_SIZE = 96
 
 PANEL_MARGIN_X, ICON_SPACING, MAX_PANEL_ICONS, PANEL_OFFSET_Y = 500, 15, 4, 30
-MENU_W, MENU_MARGIN, VISIBLE_ICONS, MENU_ICON_SPACING         = 260, 20, 4, 14
+MENU_W, MENU_MARGIN, VISIBLE_ICONS, MENU_ICON_SPACING         = 260, 20, 4, 30
 MENU_BG_COLOR, MENU_TEXT_COLOR = QColor(20,20,20,200), QColor(220,220,220)
 SCROLL_STEP, SCROLLBAR_W = 40, 16
 
@@ -56,9 +56,10 @@ class StaticBattleView(QGraphicsView):
     # Сигнал для запуска боя с выбранными заклинаниями
     battleReady = Signal(list)
 
-    def __init__(self, enemy_data):
+    def __init__(self, enemy_data, max_spells=4):
         super().__init__()
         self.enemy_data = enemy_data
+        self.max_spells = max_spells
         self.scene = QGraphicsScene(0,0,GAME_W,GAME_H)
         self.setScene(self.scene)
         self.setRenderHint(QPainter.Antialiasing)
@@ -69,7 +70,7 @@ class StaticBattleView(QGraphicsView):
 
         # данные
         self.spells = load_spells()
-        self.all_keys:   List[str] = list(self.spells)   # исходный порядок
+        self.all_keys:   List[str] = list(self.spells.keys())[:max_spells]  # Ограничиваем количество
         self.menu_keys:  List[str] = self.all_keys.copy()
         self.panel_keys: List[str] = []                  # выбранные
 
@@ -225,9 +226,9 @@ class StaticBattleWidget(QWidget):
     # Добавляем сигнал для передачи выбранных заклинаний
     battleReady = Signal(list)
 
-    def __init__(self, enemy_data, parent=None):
+    def __init__(self, enemy_data, max_spells=4, parent=None):
         super().__init__(parent)
-        self.view = StaticBattleView(enemy_data)
+        self.view = StaticBattleView(enemy_data, max_spells)
 
         # Подключаем сигнал готовности к бою
         self.view.battleReady.connect(self.handle_battle_ready)

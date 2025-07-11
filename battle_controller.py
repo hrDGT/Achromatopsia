@@ -6,11 +6,13 @@ battle_controller.py
 
 from __future__ import annotations
 
+import os
 from PySide6.QtCore import Qt, QTimer, Signal
 from PySide6.QtWidgets import QWidget, QVBoxLayout
-
+from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput, QSoundEffect
 from battle_logic import BattleState
 from battle_graphic import BattleView
+from PySide6.QtCore import QUrl
 
 
 class BattleWindow(QWidget):
@@ -21,6 +23,12 @@ class BattleWindow(QWidget):
         self.scene_number = scene_number
         self.player_spells = player_spells
         self.enemy_data = enemy_data
+
+        # Инициализация аудио
+        self.audio_output = QAudioOutput()
+        self.media_player = QMediaPlayer()
+        self.media_player.setAudioOutput(self.audio_output)
+        self.play_battle_music()
 
         # ------------ модель + вид ------------ #
         self.state = BattleState(
@@ -44,6 +52,17 @@ class BattleWindow(QWidget):
         if self.state.turn == "enemy":
             # даём секунду «подумать»
             QTimer.singleShot(1000, self.view.start_enemy_turn)
+
+    def play_battle_music(self):
+        """Загружает и воспроизводит музыку для боя"""
+        music_path = "assets/sounds/battle_music.mp3"
+        if os.path.exists(music_path):
+            self.media_player.setSource(QUrl.fromLocalFile(music_path))
+            self.audio_output.setVolume(0.5)
+            self.media_player.setLoops(QMediaPlayer.Infinite)
+            self.media_player.play()
+        else:
+            print(f"Файл музыки боя не найден: {music_path}")
 
     def handle_battle_outcome(self, outcome):
         """Обработка результата боя (победа или поражение)"""

@@ -176,7 +176,26 @@ class BattleView(QGraphicsView):
 
         self.update_health_bars_positions()
         self.update_mana_bars_positions()
-        self.set_spell_icons_active(self.state.turn == "player")
+        
+        # Проверяем, может ли игрок сделать ход
+        can_cast_any = any(self.state.player_mp >= spell.cost for spell in self.state.spells.values())
+        if self.state.turn == "player" and not can_cast_any:
+            # Если маны не хватает ни на одно заклинание, пропускаем ход
+            self.set_spell_icons_active(False)
+            QTimer.singleShot(1000, self._skip_player_turn)
+        else:
+            self.set_spell_icons_active(self.state.turn == "player")
+
+    def _skip_player_turn(self) -> None:
+        """Пропускаем ход игрока из-за недостатка маны"""
+        if self.state.turn != "player" or self._any_anim_running():
+            return
+        
+        # Просто передаем ход врагу
+        self.state._end_turn()
+        self.update_text_values()
+        if self.state.turn == "enemy":
+            QTimer.singleShot(1000, self.start_enemy_turn)
 
     # ---- вспомогательный метод бара ----
     def _update_bar(

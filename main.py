@@ -25,25 +25,32 @@ def load_enemies_data():
     except Exception as e:
         print(f"Ошибка при загрузке enemies.json: {e}")
         return {}
-
+    
 class MainWindow(QStackedWidget):
     def __init__(self):
         super().__init__()
         self.setMinimumSize(800, 600)
         self.setWindowTitle("Achromatopsia")
         self.setWindowIcon(QIcon("assets/icon.png"))
-
+        
+        # Загружаем данные о врагах
+        self.enemies_data = load_enemies_data()
+        
         # Создаем меню и сцену
         self.main_menu = MainMenu(self)
         self.addWidget(self.main_menu)
-
+        
         # Показываем главное меню
         self.setCurrentWidget(self.main_menu)
         self.show()
 
     def show_story_scene(self, scene_number):
         # Создаем новую сцену или переключаемся на существующую
-        initial_scene = StoryScene(scene_number=scene_number, parent=self)
+        initial_scene = StoryScene(
+            scene_number=scene_number, 
+            parent=self, 
+            enemies_data=self.enemies_data
+        )
         self.addWidget(initial_scene)
         self.setCurrentWidget(initial_scene)
 

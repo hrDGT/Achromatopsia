@@ -1,9 +1,3 @@
-"""
-battle_graphic.py
-=================
-Полный визуальный слой дуэли.
-"""
-
 from __future__ import annotations
 
 import random
@@ -30,40 +24,34 @@ from spell_icon import SpellIconItem
 
 
 class BattleView(QGraphicsView):
-    GAME_W, GAME_H = 1600, 900  # фиксированный «экран» игры
-    battle_outcome = Signal(str)  # Сигнал о результате боя ('win' или 'lose')
+    GAME_W, GAME_H = 1600, 800 
+    battle_outcome = Signal(str)
 
-    # ---------------------------------------------------------------- #
-    #                                init                              #
-    # ---------------------------------------------------------------- #
     def __init__(self, state: BattleState, background="battle.png") -> None:
         super().__init__()
         self.state = state
         self.background = background
 
-        # ---- базовые параметры окна / сцены ----
         self.setScene(QGraphicsScene(self))
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setRenderHint(QPainter.Antialiasing)
         self.setRenderHint(QPainter.SmoothPixmapTransform)
-        self.setFixedSize(self.GAME_W, self.GAME_H)  # главное: фиксированный размер
+        self.setFixedSize(self.GAME_W, self.GAME_H)
 
-        # --------- геометрия (из исходника) ---------
         self.character_x, self.character_y = 0, 20
         self.character_width, self.character_height = 700, 700
         self.enemy_x, self.enemy_y = 800, 20
         self.enemy_width, self.enemy_height = 700, 700
 
         self.character_spell_x, self.character_spell_y = 90, 300
-        self.character_spell_width, self.character_spell_height = 1350, 400
-        self.enemy_spell_x, self.enemy_spell_y = 60, 250
-        self.enemy_spell_width, self.enemy_spell_height = 1400, 270
+        self.character_spell_width, self.character_spell_height = 1400, 400
+        self.enemy_spell_x, self.enemy_spell_y = 70, 300
+        self.enemy_spell_width, self.enemy_spell_height = 1400, 400
 
         self.health_bar_width, self.health_bar_height = 336, 56
         self.mana_bar_width, self.mana_bar_height = 336, 28
 
-        # ---------------- фон ----------------
         self.background_pixmap = QPixmap(f"assets/backgrounds/{self.background}")
         if self.background_pixmap.isNull():
             self.background_pixmap = QPixmap(self.size())
@@ -72,13 +60,11 @@ class BattleView(QGraphicsView):
         self.background_item = QGraphicsPixmapItem()
         self.scene().addItem(self.background_item)
 
-        # -------------- персонажи -------------
         self.character_item = QGraphicsPixmapItem()
         self.enemy_item = QGraphicsPixmapItem()
         self.scene().addItem(self.character_item)
         self.scene().addItem(self.enemy_item)
 
-        # -------------- бары ------------------
         self.character_health_bar = QGraphicsPixmapItem()
         self.enemy_health_bar = QGraphicsPixmapItem()
         self.character_mana_bar = QGraphicsPixmapItem()
@@ -92,7 +78,6 @@ class BattleView(QGraphicsView):
             self.scene().addItem(bar)
             bar.setZValue(20)
 
-        # ------------- спеллы / урон ----------
         self.spell_item = QGraphicsPixmapItem()
         self.enemy_spell_item = QGraphicsPixmapItem()
         self.enemy_damage_item = QGraphicsPixmapItem()
@@ -108,7 +93,6 @@ class BattleView(QGraphicsView):
         self.enemy_damage_item.setZValue(10)
         self.character_damage_item.setZValue(10)
 
-        # ------------- текст ------------------
         self.character_health_text = QGraphicsTextItem()
         self.character_mana_text = QGraphicsTextItem()
         self.enemy_health_text = QGraphicsTextItem()
@@ -135,7 +119,6 @@ class BattleView(QGraphicsView):
         self.character_mana_text.setDefaultTextColor(QColor(50, 150, 255))
         self.enemy_mana_text.setDefaultTextColor(QColor(50, 150, 255))
 
-        # -------------- сервисные поля ----------
         self.spell_icons: List[SpellIconItem] = []
         self.selected_spell: str | None = None
         self.spell_animations: Dict[str, QMovie] = {}
@@ -144,16 +127,12 @@ class BattleView(QGraphicsView):
         self.is_enemy_attacking = self.is_enemy_casting = False
         self.is_enemy_taking_damage = self.is_character_taking_damage = False
 
-        # -------------- запуск подсистем -------
         self.setup_animations()
         self.create_spell_panel()
         self.fit_background()
         self.update_text_values()
         self.set_spell_icons_active(self.state.turn == "player")
 
-    # ====================================================================== #
-    #                          ОБНОВЛЕНИЕ HUD                                #
-    # ====================================================================== #
     def update_text_values(self) -> None:
         s = self.state
         self.character_health_text.setPlainText(str(s.player_hp))
@@ -161,7 +140,6 @@ class BattleView(QGraphicsView):
         self.enemy_health_text.setPlainText(str(s.enemy_hp))
         self.enemy_mana_text.setPlainText(str(s.enemy_mp))
 
-        # Проверяем результат боя
         if s.player_hp <= 0:
             self.battle_outcome.emit("lose")
             return
@@ -177,10 +155,8 @@ class BattleView(QGraphicsView):
         self.update_health_bars_positions()
         self.update_mana_bars_positions()
         
-        # Проверяем, может ли игрок сделать ход
         can_cast_any = any(self.state.player_mp >= spell.cost for spell in self.state.spells.values())
         if self.state.turn == "player" and not can_cast_any:
-            # Если маны не хватает ни на одно заклинание, пропускаем ход
             self.set_spell_icons_active(False)
             QTimer.singleShot(1000, self._skip_player_turn)
         else:
@@ -191,13 +167,11 @@ class BattleView(QGraphicsView):
         if self.state.turn != "player" or self._any_anim_running():
             return
         
-        # Просто передаем ход врагу
         self.state._end_turn()
         self.update_text_values()
         if self.state.turn == "enemy":
             QTimer.singleShot(1000, self.start_enemy_turn)
 
-    # ---- вспомогательный метод бара ----
     def _update_bar(
         self,
         bar_item: QGraphicsPixmapItem,
@@ -231,14 +205,10 @@ class BattleView(QGraphicsView):
         )
         bar_item.setPixmap(pm.scaled(target, Qt.IgnoreAspectRatio, Qt.SmoothTransformation))
 
-    # ====================================================================== #
-    #                       ПАНЕЛЬ СПЕЛЛОВ / ИКОНКИ                          #
-    # ====================================================================== #
     def create_spell_panel(self) -> None:
-        # Используем только выбранные заклинания
+
         spell_keys = list(self.state.spells.keys())
 
-        # Ограничиваем количество заклинаний до 4
         MAX_SPELLS = 4
         if len(spell_keys) > MAX_SPELLS:
             spell_keys = spell_keys[:MAX_SPELLS]
@@ -281,9 +251,6 @@ class BattleView(QGraphicsView):
             ic.setEnabled(enabled)
             ic.setOpacity(1.0 if enabled else 0.5)
 
-    # ====================================================================== #
-    #                          АНИМАЦИИ / MOVIES                             #
-    # ====================================================================== #
     def setup_animations(self) -> None:
         self.idle_movie = self._mk_movie("assets/animations/idle.gif", self.character_width, self.character_height)
         self.attack_movie = self._mk_movie("assets/animations/attack.gif", self.character_width, self.character_height)
@@ -291,7 +258,6 @@ class BattleView(QGraphicsView):
         self.attack_movie.frameChanged.connect(self._update_attack_frame)
         self.idle_movie.start()
 
-        # Анимации врага из данных боя
         enemy_idle = self.state.enemy_data.get("idle", "enemy_idle.gif")
         enemy_attack = self.state.enemy_data.get("attack", "enemy_attack.gif")
         enemy_hurt = self.state.enemy_data.get("hurt", "enemy_hurt.gif")
@@ -307,7 +273,6 @@ class BattleView(QGraphicsView):
         self.character_damage_movie = self._mk_movie("assets/animations/hurt.gif", self.character_width, self.character_height)
         self.character_damage_movie.frameChanged.connect(self._update_character_damage_frame)
 
-        # позиции статичных айтемов
         self.character_item.setPos(self.character_x, self.character_y)
         self.character_damage_item.setPos(self.character_x, self.character_y)
         self.enemy_item.setPos(self.enemy_x, self.enemy_y)
@@ -321,7 +286,6 @@ class BattleView(QGraphicsView):
         mv.setScaledSize(QSize(w, h))
         return mv
 
-    # ------------------- клик по иконке -------------------
     def _handle_spell_click(self, k: str) -> None:
         if self.state.turn != "player" or self._any_anim_running():
             return
@@ -331,7 +295,6 @@ class BattleView(QGraphicsView):
         self.set_spell_icons_active(False)
         self._play_attack()
 
-    # ------------------- атака персонажа ------------------
     def _play_attack(self) -> None:
         if self.is_attacking:
             return
@@ -348,7 +311,6 @@ class BattleView(QGraphicsView):
             self.idle_movie.start()
             self._play_player_spell()
 
-    # ------------------- спелл игрока ---------------------
     def _play_player_spell(self) -> None:
         if self.is_casting or self.selected_spell is None:
             return
@@ -376,7 +338,6 @@ class BattleView(QGraphicsView):
             self.update_text_values()
             self._play_enemy_hurt()
 
-    # ------------------- урон врагу -----------------------
     def _play_enemy_hurt(self) -> None:
         if self.is_enemy_taking_damage:
             return
@@ -395,7 +356,6 @@ class BattleView(QGraphicsView):
             self.is_enemy_taking_damage = False
             self._enemy_turn()
 
-    # ------------------- ход врага ------------------------
     def _enemy_turn(self) -> None:
         if self.state.turn != "enemy" or self._any_anim_running():
             return
@@ -444,7 +404,6 @@ class BattleView(QGraphicsView):
             self.update_text_values()
             self._play_player_hurt()
 
-    # ------------------- урон игроку ----------------------
     def _play_player_hurt(self) -> None:
         if self.is_character_taking_damage:
             return
@@ -464,9 +423,6 @@ class BattleView(QGraphicsView):
             self.update_text_values()
             self.set_spell_icons_active(True)
 
-    # ====================================================================== #
-    #                        ПОЗИЦИИ БАРОВ                                   #
-    # ====================================================================== #
     def update_health_bars_positions(self) -> None:
         if not hasattr(self, "spell_panel"):
             return
@@ -505,10 +461,7 @@ class BattleView(QGraphicsView):
             enemy_x - self.enemy_mana_text.boundingRect().width() - 5, enemy_y
         )
 
-    # ====================================================================== #
-    #                       фон и ресайз BattleView                           #
-    # ====================================================================== #
-    def resizeEvent(self, ev):  # noqa: N802
+    def resizeEvent(self, ev):
         super().resizeEvent(ev)
         if hasattr(self, "background_pixmap"):
             self.fit_background()
@@ -532,15 +485,11 @@ class BattleView(QGraphicsView):
         ph = self.spell_panel.pixmap().height()
         self.spell_panel.setPos((r.width() - pw) / 2, r.height() - ph - 10)
 
-    # ====================================================================== #
-    #                   клавиши (цифры, F11/Esc передаём окну)                #
-    # ====================================================================== #
-    def keyPressEvent(self, e: QKeyEvent):  # noqa: N802
+    def keyPressEvent(self, e: QKeyEvent):
         if e.key() in (Qt.Key_F11, Qt.Key_Escape):
             self.window().keyPressEvent(e)
             return
 
-        # Обработка цифровых клавиш 1-4 для выбора заклинаний
         if Qt.Key_1 <= e.key() <= Qt.Key_4:
             idx = e.key() - Qt.Key_1
             if idx < len(self.spell_icons):
@@ -550,9 +499,6 @@ class BattleView(QGraphicsView):
 
         super().keyPressEvent(e)
 
-    # ====================================================================== #
-    #                       флаг «есть ли анимация»                           #
-    # ====================================================================== #
     def _any_anim_running(self) -> bool:
         return any(
             (

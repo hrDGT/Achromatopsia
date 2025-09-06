@@ -89,6 +89,27 @@ class StoryScene(QWidget):
         self.view.installEventFilter(self)
         self.setFocusPolicy(Qt.StrongFocus)
 
+    def cleanup(self):
+        """Явное освобождение ресурсов перед удалением сцены"""
+
+    # Освобождаем графические ресурсы
+        if hasattr(self, 'scene') and self.scene:
+            self.scene.clear()
+            self.scene.deleteLater()
+        self.scene = None
+
+    # Останавливаем таймер
+        if hasattr(self, 'text_timer') and self.text_timer:
+            if self.text_timer.isActive():
+                self.text_timer.stop()
+            self.text_timer.deleteLater()
+            self.text_timer = None
+
+    # Освобождаем view
+        if hasattr(self, 'view') and self.view:
+            self.view.deleteLater()
+            self.view = None
+
     def add_background_layer(self):
         self.background_item = QGraphicsPixmapItem()
         scene_key = str(self.scene_number)
@@ -275,7 +296,6 @@ class StoryScene(QWidget):
     def play_scene_music(self):
         scene_key = str(self.scene_number)
         music_filename = self.scenes_data.get(scene_key, {}).get('music', None)
-
         if music_filename:
             music_path = os.path.abspath(os.path.join('assets', 'sounds', music_filename))
             if os.path.exists(music_path):
@@ -284,12 +304,13 @@ class StoryScene(QWidget):
 
                 if current_url == music_url and self.media_player.playbackState() == QMediaPlayer.PlayingState:
                     return
-
+                self.media_player.stop()
                 self.media_player.setSource(music_url)
                 self.audio_output.setVolume(0.5)
                 self.media_player.setLoops(QMediaPlayer.Infinite)
                 self.media_player.play()
             else:
+                self.media_player.stop()
                 print(f"Музыкальный файл не найден: {music_path}")
         else:
             self.media_player.stop()
@@ -306,7 +327,6 @@ class StoryScene(QWidget):
         super(QGraphicsView, self.view).resizeEvent(event)
 
     def go_to_next_scene(self):
-        # Проверяем, является ли текущая сцена боевой
         if self.scene_number in BATTLE_SCENES:
             self.start_spell_selection()
         else:
@@ -314,6 +334,11 @@ class StoryScene(QWidget):
             self.create_new_scene(new_scene_number)
 
     def create_new_scene(self, new_scene_number):
+        self.max_allowed_scene = max(self.max_allowed_scene, new_scene_number)
+    
+        if self.scene_number - 1 in BATTLE_SCENES:
+            self.media_player.stop()
+    
         new_scene = StoryScene(
             new_scene_number,
             parent=self.parent(),
@@ -325,13 +350,19 @@ class StoryScene(QWidget):
         )
 
         if self.parent() is not None:
+            self.parent().removeWidget(self)
             self.parent().addWidget(new_scene)
             self.parent().setCurrentWidget(new_scene)
+        
+            self.cleanup()
+            self.deleteLater()
         else:
             new_scene.show()
+            self.cleanup()
             self.close()
 
         self.save_autosave(scene_number=new_scene_number)
+        
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Space:
@@ -381,32 +412,39 @@ class StoryScene(QWidget):
         return super().eventFilter(obj, event)
 
     def show_all_scenes_text(self):
-        if self.scene_list_widget is None:
-            self.scene_list_widget = QListWidget(self)
-            self.scene_list_widget.setStyleSheet("""
-                QListWidget {
-                    background-color: rgba(0, 0, 0, 200);
-                    color: white;
-                    font-size: 18px;
-                    padding: 10px;
-                }
-                QListWidget::item {
-                    margin: 8px 0;
-                    padding: 8px;
-                }
-                QListWidget::item:selected {
-                    background-color: rgba(255, 255, 255, 50);
-                }
-            """)
-            self.scene_list_widget.itemClicked.connect(self.on_scene_list_item_clicked)
+        if self.scene_list_widget:
+            self.scene_list_widget.deleteLater()
+            self.scene_list_widget = None
 
-            for key in sorted(self.scenes_data.keys(), key=lambda x: int(x)):
-                scene_id = int(key)
-                if self.min_allowed_scene <= scene_id <= self.max_allowed_scene:
-                    text = self.scenes_data[key].get('text', '').strip()
-                    item = QListWidgetItem(text)
-                    item.setData(Qt.UserRole, scene_id)
-                    self.scene_list_widget.addItem(item)
+        self.scene_list_widget = QListWidget(self)
+
+        self.scene_list_widget.setStyleSheet("""
+            QListWidget {
+                background-color: rgba(0, 0, 0, 200);
+                color: white;
+                font-size: 18px;
+                padding: 10px;
+            }
+            QListWidget::item {
+                margin: 8px 0;
+                padding: 8px;
+            }
+            QListWidget::item:selected {
+                background-color: rgba(255, 255, 255, 50);
+            }
+        """)
+
+        self.scene_list_widget.itemClicked.connect(self.on_scene_list_item_clicked)
+
+        self.max_allowed_scene = max(self.max_allowed_scene, self.scene_number)
+
+        for key in sorted(self.scenes_data.keys(), key=lambda x: int(x)):
+            scene_id = int(key)
+            if self.min_allowed_scene <= scene_id <= self.max_allowed_scene:
+                text = self.scenes_data[key].get('text', '').strip()
+                item = QListWidgetItem(f"{scene_id}: {text}")
+                item.setData(Qt.UserRole, scene_id)
+                self.scene_list_widget.addItem(item)
 
         margin = 40
         width = self.view.width() - 2 * margin
@@ -424,6 +462,7 @@ class StoryScene(QWidget):
         self.text_rect_item.hide()
         if self.arrow_item:
             self.arrow_item.hide()
+
 
     def restore_scene_text(self):
         if self.scene_list_widget:
@@ -521,6 +560,7 @@ class StoryScene(QWidget):
 
     def start_battle(self, selected_spells, enemy_data, max_spells):
         # Создаем окно боя
+        self.media_player.stop()
         battle_window = BattleWindow(
             scene_number=self.scene_number,
             player_spells=selected_spells,
@@ -539,6 +579,7 @@ class StoryScene(QWidget):
 
     def handle_battle_result(self, victory):
         # Определяем следующую сцену
+        self.media_player.stop()
         if victory:
             next_scene = self.scene_number + 1
         else:

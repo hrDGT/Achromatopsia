@@ -1,5 +1,3 @@
-# This Python file uses the following encoding: utf-8
-
 import sys
 import os
 import json
@@ -32,20 +30,13 @@ class MainWindow(QStackedWidget):
         self.setMinimumSize(800, 600)
         self.setWindowTitle("Achromatopsia")
         self.setWindowIcon(QIcon("assets/icon.png"))
-        
-        # Загружаем данные о врагах
         self.enemies_data = load_enemies_data()
-        
-        # Создаем меню и сцену
         self.main_menu = MainMenu(self)
         self.addWidget(self.main_menu)
-        
-        # Показываем главное меню
         self.setCurrentWidget(self.main_menu)
         self.show()
 
     def show_story_scene(self, scene_number):
-        # Создаем новую сцену или переключаемся на существующую
         initial_scene = StoryScene(
             scene_number=scene_number, 
             parent=self, 

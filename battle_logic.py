@@ -1,9 +1,3 @@
-"""
-battle_logic.py
-===============
-Содержит *только* игровую логику и данные, никакого Qt.
-"""
-
 from __future__ import annotations
 
 import json
@@ -13,9 +7,6 @@ from pathlib import Path
 from typing import Dict, Tuple, List, Optional
 
 
-# -------------------------------------------------------------------- #
-#                              ДАННЫЕ                                  #
-# -------------------------------------------------------------------- #
 @dataclass(slots=True)
 class Spell:
     icon: str
@@ -28,9 +19,6 @@ class StateError(RuntimeError):
     """Любая ошибка в логике (например, неправильный ход)."""
 
 
-# -------------------------------------------------------------------- #
-#                            BATTLE STATE                              #
-# -------------------------------------------------------------------- #
 class BattleState:
     """Чистая модель: здоровье, мана, чей ход, применение спеллов."""
 
@@ -45,50 +33,38 @@ class BattleState:
         enemy_data: Optional[Dict] = None,
         max_spells: int = 4
     ) -> None:
-        # здоровье / мана
         self.player_hp = self.MAX_HEALTH
         self.player_mp = self.MAX_MANA
 
-        # Данные врага
         self.enemy_data = enemy_data or {}
         self.enemy_hp = int(self.enemy_data.get('hp', 20))
         self.enemy_mp = int(self.enemy_data.get('mana', 20))
 
-        # чей ход
         self.turn: str = random.choice(["player", "enemy"])
 
-        # заклинания игрока
         all_spells = self._load_spells(spell_file)
-        spell_keys = list(all_spells.keys())[:max_spells]  # Ограничиваем количество
+        spell_keys = list(all_spells.keys())[:max_spells]
         
         if player_spell_keys:
             self.spells = {k: v for k, v in all_spells.items() if k in player_spell_keys and k in spell_keys}
         else:
             self.spells = {k: all_spells[k] for k in spell_keys}
 
-        # заклинания врага
         self.enemy_spells = self._load_enemy_spells(enemy_data, enemy_spell_file)
 
-        # текущее выбранное (для анимации)
         self.last_player_spell: Tuple[str, Spell] | None = None
         self.last_enemy_spell: Tuple[str, Spell] | None = None
 
-        # стартовый бонус маны стороне, что ходит первой
         if self.turn == "player":
             self.player_mp = min(self.MAX_MANA, self.player_mp + 2)
         else:
             self.enemy_mp = min(self.enemy_mp, self.enemy_mp + 2)
 
-    # ---------------------------------------------------------------- #
-    #                            PUBLIC API                            #
-    # ---------------------------------------------------------------- #
-    # ---- проверки ----
     def can_cast(self, spell_key: str) -> bool:
         """Достаточно ли маны у игрока для данного спелла?"""
         spell = self.spells.get(spell_key)
         return bool(spell and self.player_mp >= spell.cost)
 
-    # ---- действия игрока ----
     def player_cast(self, spell_key: str) -> Spell:
         """Игрок кастует спелл. Возвращает объект Spell для анимации."""
         if self.turn != "player":
@@ -107,7 +83,6 @@ class BattleState:
         self._end_turn()
         return spell
 
-    # ---- ход врага ----
     def enemy_act(self) -> Spell | None:
         """
         Враг пытается кастовать. Если маны ни на что не хватает —
@@ -129,9 +104,6 @@ class BattleState:
         self._end_turn()
         return spell
 
-    # ---------------------------------------------------------------- #
-    #                         INTERNAL HELPERS                         #
-    # ---------------------------------------------------------------- #
     @staticmethod
     def _load_spells(path: str) -> Dict[str, Spell]:
         """Чтение JSON → Dict[str, Spell]."""
@@ -146,7 +118,7 @@ class BattleState:
                     damage=int(val["damage"]),
                     cost=int(val["cost"]),
                 )
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:  
             print(f"[BattleState] cannot read {path}: {exc}")
             result = {
                 "fallback": Spell("default_icon.png", "default_animation.gif", 5, 3)

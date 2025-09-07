@@ -2,7 +2,7 @@
         "Wind push": {
         "icon": "wind_spell1.png",
         "animation": "wind_spell1.gif",
-        "damage": "80",
+        "damage": "8",
         "cost": "5"
         },
         "Stones": {

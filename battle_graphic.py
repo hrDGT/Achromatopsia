@@ -466,30 +466,13 @@ class BattleView(QGraphicsView):
         super().resizeEvent(ev)
         if hasattr(self, "background_pixmap"):
             self.fit_background()
-    # def resizeEvent(self, event):
-    #     """Масштабирует сцену при изменении размера окна."""
-    #     super().resizeEvent(event)
-    #     self.fitInView(self.sceneRect(), Qt.KeepAspectRatio)
-
-    # def fit_background(self) -> None:
-    #     vp_size = self.viewport().size()
-    #     scaled = self.background_pixmap.scaled(
-    #         vp_size, Qt.KeepAspectRatioByExpanding, Qt.SmoothTransformation
-    #     )
-    #     self.background_item.setPixmap(scaled)
-    #     self.setSceneRect(QRectF(scaled.rect()))
-    #     self._update_panel_position()
-    #     self.update_health_bars_positions()
-    #     self.update_mana_bars_positions()
-    
     def fit_background(self) -> None:
         vp_size = self.viewport().size()
         img_size = self.background_pixmap.size()
     
-    # Вычисляем правильный масштаб для заполнения без искажений
         scale_x = vp_size.width() / img_size.width()
         scale_y = vp_size.height() / img_size.height()
-        scale = max(scale_x, scale_y)  # Берем больший масштаб для заполнения
+        scale = max(scale_x, scale_y)  
     
         scaled_size = QSize(
             int(img_size.width() * scale),
@@ -501,12 +484,10 @@ class BattleView(QGraphicsView):
     
         self.background_item.setPixmap(scaled)
     
-    # Центрируем
         x = (vp_size.width() - scaled_size.width()) / 2
         y = (vp_size.height() - scaled_size.height()) / 2
         self.background_item.setPos(x, y)
     
-    # Устанавливаем sceneRect в размер viewport
         self.setSceneRect(QRectF(0, 0, vp_size.width(), vp_size.height()))
     
         self._update_panel_position()

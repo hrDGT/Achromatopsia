@@ -306,7 +306,6 @@ class StoryScene(QWidget):
                     return
                 self.media_player.stop()
                 self.media_player.setSource(music_url)
-                self.audio_output.setVolume(0.5)
                 self.media_player.setLoops(QMediaPlayer.Infinite)
                 self.media_player.play()
             else:
@@ -336,8 +335,8 @@ class StoryScene(QWidget):
     def create_new_scene(self, new_scene_number):
         self.max_allowed_scene = max(self.max_allowed_scene, new_scene_number)
     
-        if self.scene_number - 1 in BATTLE_SCENES:
-            self.media_player.stop()
+        #if self.scene_number - 1 in BATTLE_SCENES:
+            #self.media_player.stop()
     
         new_scene = StoryScene(
             new_scene_number,
@@ -561,12 +560,16 @@ class StoryScene(QWidget):
     def start_battle(self, selected_spells, enemy_data, max_spells):
         # Создаем окно боя
         self.media_player.stop()
+        
+        # ИСПРАВЛЕНИЕ: Передаем общий медиаплеер и аудиовыход
         battle_window = BattleWindow(
             scene_number=self.scene_number,
             player_spells=selected_spells,
             enemy_data=enemy_data,
             max_spells=max_spells,
-            parent=self.parent()
+            parent=self.parent(),
+            media_player=self.media_player,      # ← Передаем общий плеер
+            audio_output=self.audio_output       # ← Передаем общий аудиовыход
         )
 
         # Подключаем обработчик завершения боя
@@ -578,12 +581,21 @@ class StoryScene(QWidget):
             self.parent().setCurrentWidget(battle_window)
 
     def handle_battle_result(self, victory):
-        # Определяем следующую сцену
+            # Останавливаем музыку
         self.media_player.stop()
+
+        # Определяем следующую сцену
         if victory:
             next_scene = self.scene_number + 1
         else:
             next_scene = max(1, self.scene_number - 5)
+
+        # Получаем текущее баттл-окно и очищаем его
+        current_widget = self.parent().currentWidget()
+        if isinstance(current_widget, BattleWindow):
+            current_widget.cleanup()  # Очищаем ресурсы
+            self.parent().removeWidget(current_widget)  # Удаляем из стека
+            current_widget.deleteLater()  # Удаляем из памяти
 
         # Создаем новую сцену истории
         new_scene = StoryScene(

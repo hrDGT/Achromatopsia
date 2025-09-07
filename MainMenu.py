@@ -34,8 +34,17 @@ class MainMenu(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.parent = parent
-        self.media_player = QMediaPlayer()
-        self.audio_output = QAudioOutput()
+        
+        # Используем медиаплеер из родителя
+        if parent and hasattr(parent, 'media_player'):
+            self.media_player = parent.media_player
+            self.audio_output = parent.audio_output
+        else:
+            # Создаем новые только если родитель не предоставил
+            self.audio_output = QAudioOutput()
+            self.media_player = QMediaPlayer()
+            self.media_player.setAudioOutput(self.audio_output)
+            
         self.init_ui()
         
     def show_settings_window(self):
@@ -51,7 +60,6 @@ class MainMenu(QWidget):
 
         self.media_player.setAudioOutput(self.audio_output)
         self.audio_output.setVolume(0.5)
-        
         self.media_player.stop()
         music_path = os.path.abspath("assets/sounds/menu_music.mp3")
         if os.path.exists(music_path):

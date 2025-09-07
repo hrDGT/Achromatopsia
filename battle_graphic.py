@@ -37,7 +37,8 @@ class BattleView(QGraphicsView):
         self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setRenderHint(QPainter.Antialiasing)
         self.setRenderHint(QPainter.SmoothPixmapTransform)
-        self.setFixedSize(self.GAME_W, self.GAME_H)
+        # Убираем фиксированный размер и устанавливаем минимальный
+        self.setMinimumSize(400, 300)
 
         self.character_x, self.character_y = 0, 20
         self.character_width, self.character_height = 700, 700
@@ -465,14 +466,49 @@ class BattleView(QGraphicsView):
         super().resizeEvent(ev)
         if hasattr(self, "background_pixmap"):
             self.fit_background()
+    # def resizeEvent(self, event):
+    #     """Масштабирует сцену при изменении размера окна."""
+    #     super().resizeEvent(event)
+    #     self.fitInView(self.sceneRect(), Qt.KeepAspectRatio)
 
+    # def fit_background(self) -> None:
+    #     vp_size = self.viewport().size()
+    #     scaled = self.background_pixmap.scaled(
+    #         vp_size, Qt.KeepAspectRatioByExpanding, Qt.SmoothTransformation
+    #     )
+    #     self.background_item.setPixmap(scaled)
+    #     self.setSceneRect(QRectF(scaled.rect()))
+    #     self._update_panel_position()
+    #     self.update_health_bars_positions()
+    #     self.update_mana_bars_positions()
+    
     def fit_background(self) -> None:
         vp_size = self.viewport().size()
-        scaled = self.background_pixmap.scaled(
-            vp_size, Qt.KeepAspectRatioByExpanding, Qt.SmoothTransformation
+        img_size = self.background_pixmap.size()
+    
+    # Вычисляем правильный масштаб для заполнения без искажений
+        scale_x = vp_size.width() / img_size.width()
+        scale_y = vp_size.height() / img_size.height()
+        scale = max(scale_x, scale_y)  # Берем больший масштаб для заполнения
+    
+        scaled_size = QSize(
+            int(img_size.width() * scale),
+            int(img_size.height() * scale)
         )
+        scaled = self.background_pixmap.scaled(
+            scaled_size, Qt.IgnoreAspectRatio, Qt.SmoothTransformation
+        )
+    
         self.background_item.setPixmap(scaled)
-        self.setSceneRect(QRectF(scaled.rect()))
+    
+    # Центрируем
+        x = (vp_size.width() - scaled_size.width()) / 2
+        y = (vp_size.height() - scaled_size.height()) / 2
+        self.background_item.setPos(x, y)
+    
+    # Устанавливаем sceneRect в размер viewport
+        self.setSceneRect(QRectF(0, 0, vp_size.width(), vp_size.height()))
+    
         self._update_panel_position()
         self.update_health_bars_positions()
         self.update_mana_bars_positions()

@@ -1,9 +1,3 @@
-"""
-static_battle_scene.py
-======================
-Виджет для выбора заклинаний перед боем.
-"""
-
 from __future__ import annotations
 
 import json, sys
@@ -18,7 +12,6 @@ from PySide6.QtWidgets import (
     QPushButton, QVBoxLayout, QWidget, QGraphicsProxyWidget
 )
 
-# ----------------------------------------------------------- CONSTANTS
 GAME_W, GAME_H = 1600, 900
 ICON_SIZE = 96
 
@@ -27,19 +20,17 @@ MENU_W, MENU_MARGIN, VISIBLE_ICONS, MENU_ICON_SPACING         = 260, 20, 4, 30
 MENU_BG_COLOR, MENU_TEXT_COLOR = QColor(20,20,20,200), QColor(220,220,220)
 SCROLL_STEP, SCROLLBAR_W = 40, 16
 
-# ----------------------------------------------------------- DATA
 def load_spells(path="assets/spells/spells.json")->dict:
     try: return json.load(Path(path).open(encoding="utf-8"))
     except Exception as e: print("load_spells:", e); return {}
 
-# ----------------------------- CLICKABLE ICONS -----------------------------
 class MenuIcon(QGraphicsPixmapItem):
     """Иконка в меню → добавление в панель."""
     def __init__(self,pix:QPixmap,key:str,cb:Callable[[str],bool])->None:
         super().__init__(pix); self.key=key; self._cb=cb
         self.label:QGraphicsSimpleTextItem|None=None
         self.setAcceptedMouseButtons(Qt.LeftButton); self.setCursor(Qt.PointingHandCursor)
-    def mousePressEvent(self,e):                             # noqa: D401
+    def mousePressEvent(self,e):                         
         if e.button()==Qt.LeftButton and self._cb(self.key):
             self.setVisible(False); self.label.setVisible(False)
 
@@ -48,19 +39,17 @@ class PanelIcon(QGraphicsPixmapItem):
     def __init__(self,pix:QPixmap,key:str,cb:Callable[[str],None])->None:
         super().__init__(pix); self.key=key; self._cb=cb
         self.setAcceptedMouseButtons(Qt.LeftButton); self.setCursor(Qt.PointingHandCursor)
-    def mousePressEvent(self,e):                             # noqa: D401
+    def mousePressEvent(self,e):                            
         if e.button()==Qt.LeftButton: self._cb(self.key)
 
-# ---------------------------------------------------------------- VIEW
 class StaticBattleView(QGraphicsView):
-    # Сигнал для запуска боя с выбранными заклинаниями
     battleReady = Signal(list)
 
     def __init__(self, enemy_data, max_spells=4):
         super().__init__()
         self.enemy_data = enemy_data
         self.max_spells = max_spells
-        self.scene = QGraphicsScene(0,0,GAME_W,GAME_H)
+        self.scene = QGraphicsScene(0, 0, GAME_W, GAME_H)
         self.setScene(self.scene)
         self.setRenderHint(QPainter.Antialiasing)
         self.setRenderHint(QPainter.SmoothPixmapTransform)
@@ -68,21 +57,18 @@ class StaticBattleView(QGraphicsView):
         self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setMinimumSize(400, 300)
 
-        # данные
         self.spells = load_spells()
-        self.all_keys:   List[str] = list(self.spells.keys())[:max_spells]  # Ограничиваем количество
-        self.menu_keys:  List[str] = self.all_keys.copy()
-        self.panel_keys: List[str] = []                  # выбранные
+        self.all_keys: List[str] = list(self.spells.keys())[:max_spells]  
+        self.panel_keys: List[str] = []                
+        self.menu_keys: List[str] = self.all_keys.copy()  # ← ВАЖНО! Добавьте эту строку
+        
+        self.menu_viewport: QGraphicsRectItem | None = None
+        self.content_item: QGraphicsRectItem | None = None
+        self.scrollbar: QScrollBar | None = None
+        self.panel_item: QGraphicsPixmapItem | None = None
+        self.done_btn: QPushButton | None = None
+        self.done_btn_proxy: QGraphicsProxyWidget | None = None
 
-        # refs
-        self.menu_viewport: QGraphicsRectItem|None=None
-        self.content_item:  QGraphicsRectItem|None=None
-        self.scrollbar:     QScrollBar|None=None
-        self.panel_item:    QGraphicsPixmapItem|None=None
-        self.done_btn:      QPushButton|None=None
-        self.done_btn_proxy: QGraphicsProxyWidget|None=None
-
-        # draw
         self._bg(enemy_data.get('background', 'battle.png'))
         self._hero()
         self._panel()
@@ -94,8 +80,7 @@ class StaticBattleView(QGraphicsView):
         super().resizeEvent(event)
         self.fitInView(self.sceneRect(), Qt.KeepAspectRatio)
 
-    # -------------------------- events
-    def wheelEvent(self,e):                                  # noqa: D401
+    def wheelEvent(self,e):                              
         if self.menu_viewport and self.scrollbar:
             pos=self.mapToScene(e.position().toPoint())
             if self.menu_viewport.contains(self.menu_viewport.mapFromScene(pos)):
@@ -103,7 +88,6 @@ class StaticBattleView(QGraphicsView):
                 if d: self.scrollbar.setValue(self.scrollbar.value()+(-SCROLL_STEP if d>0 else SCROLL_STEP)); e.accept(); return
         super().wheelEvent(e)
 
-    # -------------------------- draw helpers
     def _bg(self, background_image):
         pm=QPixmap(f"assets/backgrounds/{background_image}")
         if pm.isNull():
@@ -116,7 +100,6 @@ class StaticBattleView(QGraphicsView):
         h=QGraphicsPixmapItem(pm.scaled(700,700,Qt.KeepAspectRatio,Qt.SmoothTransformation))
         h.setPos(0,20); h.setZValue(10); self.scene.addItem(h)
 
-    # ----------- bottom panel ------------------------------------------------
     def _panel(self):
         pm=QPixmap("assets/gui/spell_panel.png")
         if pm.isNull():
@@ -133,7 +116,6 @@ class StaticBattleView(QGraphicsView):
     def _remove_from_panel(self,key:str):
         if key not in self.panel_keys: return
         self.panel_keys.remove(key)
-        # вернуть по исходному порядку
         idx=self.all_keys.index(key)
         insert_pos=0
         while insert_pos<len(self.menu_keys) and self.all_keys.index(self.menu_keys[insert_pos])<idx:
@@ -151,7 +133,6 @@ class StaticBattleView(QGraphicsView):
             icon.setParentItem(self.panel_item)
             icon.setPos(PANEL_MARGIN_X+i*(ICON_SIZE+ICON_SPACING),15)
 
-    # ----------- right menu --------------------------------------------------
     def _build_menu(self):
         view_h=MENU_MARGIN*2+VISIBLE_ICONS*(ICON_SIZE+MENU_ICON_SPACING)-MENU_ICON_SPACING
         vp=QGraphicsRectItem(0,0,MENU_W,view_h); vp.setBrush(MENU_BG_COLOR); vp.setPen(Qt.NoPen)
@@ -191,7 +172,6 @@ class StaticBattleView(QGraphicsView):
             lbl=QGraphicsSimpleTextItem(title,self.content_item); lbl.setBrush(MENU_TEXT_COLOR)
             lbl.setPos((MENU_W-lbl.boundingRect().width())/2, y+ICON_SIZE+4); icon.label=lbl
 
-    # ----------- Done button --------------------------------------------------
     def _build_done_btn(self):
         btn = QPushButton("Готово")
         btn_w, btn_h = MENU_W, 40
@@ -199,10 +179,9 @@ class StaticBattleView(QGraphicsView):
         view_h = MENU_MARGIN*2 + VISIBLE_ICONS*(ICON_SIZE + MENU_ICON_SPACING) - MENU_ICON_SPACING
         y = MENU_MARGIN + view_h + 10
 
-        # Создаем прокси-виджет для кнопки
         self.done_btn_proxy = self.scene.addWidget(btn)
         self.done_btn_proxy.setPos(x, y)
-        self.done_btn_proxy.setZValue(25)  # Высокий Z, чтобы кнопка была поверх
+        self.done_btn_proxy.setZValue(25)
 
         btn.setFixedSize(btn_w, btn_h)
         btn.clicked.connect(self._on_done_clicked)
@@ -216,28 +195,22 @@ class StaticBattleView(QGraphicsView):
     def _on_done_clicked(self):
         """Обработка нажатия кнопки 'Готово'"""
         if len(self.panel_keys) == 4:
-            # Эмитим сигнал с выбранными заклинаниями
             self.battleReady.emit(self.panel_keys)
         else:
             print("Ошибка: должно быть выбрано ровно 4 заклинания")
 
-# ---------------------------------------------------------------- WIDGET
 class StaticBattleWidget(QWidget):
-    # Добавляем сигнал для передачи выбранных заклинаний
     battleReady = Signal(list)
 
     def __init__(self, enemy_data, max_spells=4, parent=None):
         super().__init__(parent)
         self.view = StaticBattleView(enemy_data, max_spells)
 
-        # Подключаем сигнал готовности к бою
         self.view.battleReady.connect(self.handle_battle_ready)
 
-        # Настройка layout
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
         layout.addWidget(self.view)
 
     def handle_battle_ready(self, selected_spells):
-        # Эмитируем собственный сигнал с выбранными заклинаниями
         self.battleReady.emit(selected_spells)

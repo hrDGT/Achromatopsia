@@ -4,6 +4,7 @@ import json
 from PySide6.QtWidgets import QApplication, QStackedWidget
 from scenes.StoryScene import StoryScene
 from PySide6.QtGui import QIcon
+from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 from MainMenu import MainMenu
 
 def load_autosave():
@@ -31,6 +32,9 @@ class MainWindow(QStackedWidget):
         self.setWindowTitle("Achromatopsia")
         self.setWindowIcon(QIcon("assets/icon.png"))
         self.enemies_data = load_enemies_data()
+        self.audio_output = QAudioOutput()
+        self.media_player = QMediaPlayer()
+        self.media_player.setAudioOutput(self.audio_output)
         self.main_menu = MainMenu(self)
         self.addWidget(self.main_menu)
         self.setCurrentWidget(self.main_menu)
@@ -40,7 +44,9 @@ class MainWindow(QStackedWidget):
         initial_scene = StoryScene(
             scene_number=scene_number, 
             parent=self, 
-            enemies_data=self.enemies_data
+            enemies_data=self.enemies_data,
+            media_player=self.media_player,
+            audio_output=self.audio_output 
         )
         self.addWidget(initial_scene)
         self.setCurrentWidget(initial_scene)

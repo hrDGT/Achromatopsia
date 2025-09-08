@@ -60,7 +60,7 @@ class StaticBattleView(QGraphicsView):
         self.spells = load_spells()
         self.all_keys: List[str] = list(self.spells.keys())[:max_spells]  
         self.panel_keys: List[str] = []                
-        self.menu_keys: List[str] = self.all_keys.copy()  # ← ВАЖНО! Добавьте эту строку
+        self.menu_keys: List[str] = self.all_keys.copy() 
         
         self.menu_viewport: QGraphicsRectItem | None = None
         self.content_item: QGraphicsRectItem | None = None

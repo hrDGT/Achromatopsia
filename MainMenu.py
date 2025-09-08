@@ -34,13 +34,10 @@ class MainMenu(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.parent = parent
-        
-        # Используем медиаплеер из родителя
         if parent and hasattr(parent, 'media_player'):
             self.media_player = parent.media_player
             self.audio_output = parent.audio_output
         else:
-            # Создаем новые только если родитель не предоставил
             self.audio_output = QAudioOutput()
             self.media_player = QMediaPlayer()
             self.media_player.setAudioOutput(self.audio_output)
@@ -100,6 +97,7 @@ class MainMenu(QWidget):
         self.play_button.setCursor(Qt.PointingHandCursor)
         self.play_button.clicked.connect(self.start_game)
         button_layout.addWidget(self.play_button, stretch=1, alignment=Qt.AlignCenter)
+
 
         self.settings_button = RoundedButton(self.button_container)
         self.settings_button.setIcon(QIcon("assets/gui/settings.png"))
@@ -182,7 +180,7 @@ class MainMenu(QWidget):
     def start_game(self):
         if self.parent:
             self.media_player.stop()
-            self.parent.show_story_scene(1)
+            self.parent.show_story_scene()
 
     def exit_game(self):
         self.media_player.stop()
@@ -341,6 +339,29 @@ class SettingsWindow(Window):
         self.volume_slider.valueChanged.connect(self.change_volume)
         sound_layout.addWidget(self.volume_slider)
         self.main_layout.insertWidget(1, sound_group)
+        self.reset_progress_btn = QPushButton("Reset Progress", self)
+        self.reset_progress_btn.setStyleSheet("""
+            QPushButton {
+                background-color: rgba(30, 30, 30, 100);
+                color: #AAAAAA;
+                border: 2px solid #000000;
+                font-size: 16px;
+                font-weight: bold;
+                padding: 10px;
+            }
+            QPushButton:hover:enabled {
+                background-color: transparet;
+            }
+            QPushButton:disabled {
+                background-color: rgba(50, 50, 50, 100);
+                color: #AAAAAA;
+                border: 2px solid #222222;
+            }
+        """)
+        self.reset_progress_btn.setFixedSize(200, 50)
+        self.reset_progress_btn.setCursor(Qt.PointingHandCursor)
+        self.reset_progress_btn.clicked.connect(self.reset_progress)
+        self.main_layout.insertWidget(2, self.reset_progress_btn, 0, Qt.AlignHCenter)
 
     def change_volume(self, value):
         """Изменяет громкость аудио"""
@@ -352,4 +373,41 @@ class SettingsWindow(Window):
         self.update_size()
         super().showEvent(event)
 
-        
+    def update_reset_button(self):
+        """Обновляет состояние кнопки сброса прогресса"""
+        try:
+            if os.path.exists('.autosave'):
+                with open('.autosave', 'r', encoding='utf-8') as f:
+                    scene_number = int(f.read().strip())
+                    # Блокируем кнопку если сохранена 1 сцена
+                    self.reset_progress_btn.setEnabled(scene_number > 1)
+            else:
+                # Если файла нет - прогресс уже сброшен
+                self.reset_progress_btn.setEnabled(False)
+        except:
+            self.reset_progress_btn.setEnabled(False)
+
+    def reset_progress(self):
+        """Сброс прогресса к 1 сцене"""
+        try:
+            # Записываем 1 в автосейв
+            with open('.autosave', 'w', encoding='utf-8') as f:
+                f.write('1')
+            
+            print("Прогресс сброшен к 1 сцене")
+            
+            # Обновляем состояние кнопки
+            self.reset_progress_btn.setEnabled(False)
+            
+            # Показываем сообщение (опционально)
+            from PySide6.QtWidgets import QMessageBox
+            QMessageBox.information(self, "Progress Reset", "Game progress has been reset to the beginning")
+            
+        except Exception as e:
+            print(f"Ошибка при сбросе прогресса: {e}")
+
+    def showEvent(self, event):
+        """При показе окна обновляем состояние кнопки"""
+        self.update_size()
+        self.update_reset_button()  # ← Добавляем эту строку
+        super().showEvent(event)

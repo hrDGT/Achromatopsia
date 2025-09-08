@@ -3,144 +3,168 @@
         "icon": "wind_spell1.png",
         "animation": "wind_spell1.gif",
         "damage": "8",
-        "cost": "5"
+        "cost": "5",
+        "description": "   Мощный ветряной толчок\nУрон: 8.\nСтоимость: 5."
         },
         "Stones": {
         "icon": "wind_spell2.png",
         "animation": "wind_spell2.gif",
         "damage": "4",
-        "cost": "2"
+        "cost": "2",
+        "description": "   Камни обрушиваются на врага\nУрон: 4.\nСтоимость: 2."
         },
         "Tornado": {
         "icon": "wind_spell3.png",
         "animation": "wind_spell3.gif",
         "damage": "1",
-        "cost": "0"
+        "cost": "0",
+        "description": "   Торнадо збивает с ног\nУрон: 1.\nСтоимость: 0."
         },
         "Smoke bomb": {
         "icon": "wind_spell4.png",
         "animation": "wind_spell4.gif",
         "damage": "10",
-        "cost": "15"
+        "cost": "15",
+        "description": "   Лишает врага зрения и дыхания\nУрон: 10.\nСтоимость: 15."
         },
         "Fireball": {
         "icon": "fire_spell1.png",
         "animation": "fire_spell1.gif",
         "damage": "4",
-        "cost": "2"
+        "cost": "2",
+        "description": "   Оставляет жгучий след\nУрон: 4.\nСтоимость: 2."
         },
         "Firebolt": {
         "icon": "fire_spell2.png",
         "animation": "fire_spell2.gif",
         "damage": "1",
-        "cost": "0"
+        "cost": "0",
+        "description": "   Поджигает пяточки\nУрон: 1.\nСтоимость: 0."
         },
         "Hell pitchfork": {
         "icon": "fire_spell3.png",
         "animation": "fire_spell3.gif",
         "damage": "9",
-        "cost": "7"
+        "cost": "7",
+        "description": "   Протыкает раскалёнными вилами\nУрон: 9.\nСтоимость: 7."
         },
         "Meteor": {
         "icon": "fire_spell4.png",
         "animation": "fire_spell4.gif",
         "damage": "2",
-        "cost": "1"
+        "cost": "1",
+        "description": "   Падает с неба вблизи врага\nУрон: 2.\nСтоимость: 1."
         },
         "Ice spike": {
         "icon": "ice_spell1.png",
         "animation": "ice_spell1.gif",
         "damage": "8",
-        "cost": "6"
+        "cost": "6",
+        "description": "   Внезапно насаживает врага на сосульку\nУрон: 8.\nСтоимость: 6."
         },
         "Geyser": {
         "icon": "ice_spell2.png",
         "animation": "ice_spell2.gif",
         "damage": "4",
-        "cost": "3"
+        "cost": "3",
+        "description": "   Уносит в небеса для свободного падения\nУрон: 4.\nСтоимость: 3."
         },
         "Waterball": {
         "icon": "ice_spell3.png",
         "animation": "ice_spell3.gif",
         "damage": "1",
-        "cost": "0"
+        "cost": "0",
+        "description": "   Водичка в личико\nУрон: 1.\nСтоимость: 0."
         },
         "Swords of Fallen King": {
         "icon": "ice_spell4.png",
         "animation": "ice_spell4.gif",
         "damage": "4",
-        "cost": "2"
+        "cost": "2",
+        "description": "   Помощь мечей падших королей\nУрон: 4.\nСтоимость: 2."
         },
         "Phoenix": {
         "icon": "thunder_spell1.png",
         "animation": "thunder_spell1.gif",
         "damage": "1",
-        "cost": "0"
+        "cost": "0",
+        "description": "   Удивляет врага жаром\nУрон: 1.\nСтоимость: 0."
         },
         "Light": {
         "icon": "thunder_spell2.png",
         "animation": "thunder_spell2.gif",
         "damage": "3",
-        "cost": "2"
+        "cost": "2",
+        "description": "   Та, будет свет\nУрон: 3.\nСтоимость: 2."
         },
         "Spark": {
         "icon": "thunder_spell3.png",
         "animation": "thunder_spell3.gif",
         "damage": "7",
-        "cost": "5"
+        "cost": "5",
+        "description": "   Искра альфа-излучения\nУрон: 7.\nСтоимость: 5."
         },
         "Light bolt": {
         "icon": "thunder_spell4.png",
         "animation": "thunder_spell4.gif",
         "damage": "9",
-        "cost": "11"
+        "cost": "11",
+        "description": "   Болт Зевса\nУрон: 9.\nСтоимость: 11."
         },
         "Lightning of Wrath": {
         "icon": "purple_spell1.png",
         "animation": "purple_spell1.gif",
         "damage": "15",
-        "cost": "20"
+        "cost": "20",
+        "description": "   Зевс тряхнул стариной\nУрон: 15.\nСтоимость: 20."
         },
         "The Curse of Envy": {
         "icon": "purple_spell2.png",
         "animation": "purple_spell2.gif",
         "damage": "6",
-        "cost": "3"
+        "cost": "3",
+        "description": "   Вселяет зависть во врага\nУрон: 6.\nСтоимость: 3."
         },
         "Skull of Greed": {
         "icon": "purple_spell3.png",
         "animation": "purple_spell3.gif",
         "damage": "1",
-        "cost": "0"
+        "cost": "0",
+        "description": "   Отравляет жадностью кости\nУрон: 1.\nСтоимость: 0."
         },
         "Saw of Pride": {
         "icon": "purple_spell4.png",
         "animation": "purple_spell4.gif",
         "damage": "10",
-        "cost": "12"
+        "cost": "12",
+        "description": "   Вдохновляющая расчленёнка\nУрон: 10.\nСтоимость: 12."
         },
         "Holy blow": {
         "icon": "holy_spell1.png",
         "animation": "holy_spell1.gif",
         "damage": "5",
-        "cost": "3"
+        "cost": "3",
+        "description": "   Отсос господя, невозможно устоять\nУрон: 5.\nСтоимость: 3."
         },
         "Holy bolt": {
         "icon": "holy_spell2.png",
         "animation": "holy_spell2.gif",
         "damage": "2",
-        "cost": "0"
+        "cost": "0",
+        "description": "   Болт господя, местами даже приятно\nУрон: 2.\nСтоимость: 0."
         },
         "Wave of Forgiveness": {
         "icon": "holy_spell3.png",
         "animation": "holy_spell3.gif",
         "damage": "6",
-        "cost": "4"
+        "cost": "4",
+        "description": "   Прилив прощения и милосердия\nУрон: 6.\nСтоимость: 4."
         },
         "Inquisition": {
         "icon": "holy_spell4.png",
         "animation": "holy_spell4.gif",
         "damage": "9",
-        "cost": "11"
+        "cost": "11",
+        "description": "   Инквизиция\nУрон: 9.\nСтоимость: 11."
         }
 }

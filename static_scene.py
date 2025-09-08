@@ -128,8 +128,8 @@ class StaticBattleView(QGraphicsView):
         for i,key in enumerate(self.panel_keys):
             cfg=self.spells[key]; pix=QPixmap(f"assets/spells/{cfg['icon']}") or QPixmap(ICON_SIZE,ICON_SIZE)
             if pix.isNull(): pix.fill(Qt.green)
-            icon=PanelIcon(pix.scaled(ICON_SIZE,ICON_SIZE,Qt.IgnoreAspectRatio,Qt.SmoothTransformation),
-                           key,self._remove_from_panel)
+            icon = PanelIcon(pix.scaled(ICON_SIZE,ICON_SIZE,Qt.IgnoreAspectRatio,Qt.SmoothTransformation),
+                 key,self._remove_from_panel)
             icon.setParentItem(self.panel_item)
             icon.setPos(PANEL_MARGIN_X+i*(ICON_SIZE+ICON_SPACING),15)
 
@@ -165,8 +165,8 @@ class StaticBattleView(QGraphicsView):
             cfg=self.spells[key]; y=MENU_MARGIN+i*(ICON_SIZE+MENU_ICON_SPACING)
             pix=QPixmap(f"assets/spells/{cfg['icon']}") or QPixmap(ICON_SIZE,ICON_SIZE)
             if pix.isNull(): pix.fill(Qt.red if i%2 else Qt.blue)
-            icon=MenuIcon(pix.scaled(ICON_SIZE,ICON_SIZE,Qt.IgnoreAspectRatio,Qt.SmoothTransformation),
-                          key,self._add_to_panel)
+            icon = MenuIcon(pix.scaled(ICON_SIZE,ICON_SIZE,Qt.IgnoreAspectRatio,Qt.SmoothTransformation),
+                key,self._add_to_panel)
             icon.setParentItem(self.content_item); icon.setPos((MENU_W-ICON_SIZE)/2, y)
             title=cfg.get("title") or cfg.get("name") or key
             lbl=QGraphicsSimpleTextItem(title,self.content_item); lbl.setBrush(MENU_TEXT_COLOR)

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import random
 from typing import Dict, List
 
@@ -134,6 +135,16 @@ class BattleView(QGraphicsView):
         self.update_text_values()
         self.set_spell_icons_active(self.state.turn == "player")
 
+    def load_spell_data(self, spell_key: str) -> dict:
+        """Загружает данные заклинания из JSON файла"""
+        try:
+            with open('assets/spells/spells.json', 'r', encoding='utf-8') as f:
+                spells_data = json.load(f)
+                return spells_data.get(spell_key, {})
+        except Exception as e:
+            print(f"Ошибка загрузки данных заклинания: {e}")
+            return {}
+
     def update_text_values(self) -> None:
         s = self.state
         self.character_health_text.setPlainText(str(s.player_hp))
@@ -234,9 +245,13 @@ class BattleView(QGraphicsView):
                 icon_pm = QPixmap(icon, icon)
                 icon_pm.fill(Qt.red if i % 2 else Qt.blue)
 
+            # Получаем данные заклинания из JSON
+            spell_data = self.load_spell_data(key)
+            
             itm = SpellIconItem(
                 icon_pm.scaled(icon, icon, Qt.IgnoreAspectRatio, Qt.SmoothTransformation),
                 key,
+                spell_data,  # Передаем данные заклинания
                 self.spell_panel,
             )
             x = margin + i * (icon + spacing)
@@ -244,6 +259,7 @@ class BattleView(QGraphicsView):
             itm.setAcceptHoverEvents(True)
             itm.mousePressEvent = lambda e, k=key: self._handle_spell_click(k)
             self.spell_icons.append(itm)
+            
 
     def set_spell_icons_active(self, active: bool) -> None:
         for ic in self.spell_icons:
@@ -288,6 +304,12 @@ class BattleView(QGraphicsView):
         return mv
 
     def _handle_spell_click(self, k: str) -> None:
+
+        # Принудительно скрываем все описания перед обработкой клика
+        for icon in self.spell_icons:
+            if hasattr(icon, 'hide_description'):
+                icon.hide_description()
+                
         if self.state.turn != "player" or self._any_anim_running():
             return
         if not self.state.can_cast(k):

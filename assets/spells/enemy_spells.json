@@ -1,0 +1,122 @@
+{
+        "fire_spell1": {
+        "icon": "fire_spell1.png",
+        "animation": "E_fire_spell1.gif",
+        "damage": "4",
+        "cost": "2"
+        },
+        "fire_spell2": {
+        "icon": "fire_spell2.png",
+        "animation": "E_fire_spell2.gif",
+        "damage": "1",
+        "cost": "0"
+        },
+        "fire_spell3": {
+        "icon": "fire_spell3.png",
+        "animation": "E_fire_spell3.gif",
+        "damage": "9",
+        "cost": "7"
+        },
+        "fire_spell4": {
+        "icon": "fire_spell4.png",
+        "animation": "E_fire_spell4.gif",
+        "damage": "2",
+        "cost": "1"
+        },
+        "ice_spell1": {
+        "icon": "ice_spell1.png",
+        "animation": "E_ice_spell1.gif",
+        "damage": "8",
+        "cost": "6"
+        },
+        "ice_spell2": {
+        "icon": "ice_spell2.png",
+        "animation": "E_ice_spell2.gif",
+        "damage": "4",
+        "cost": "3"
+        },
+        "ice_spell3": {
+        "icon": "ice_spell3.png",
+        "animation": "E_ice_spell3.gif",
+        "damage": "1",
+        "cost": "0"
+        },
+        "ice_spell4": {
+        "icon": "ice_spell4.png",
+        "animation": "E_ice_spell4.gif",
+        "damage": "4",
+        "cost": "2"
+        },
+        "thunder_spell1": {
+        "icon": "thunder_spell1.png",
+        "animation": "E_thunder_spell1.gif",
+        "damage": "1",
+        "cost": "0"
+        },
+        "thunder_spell2": {
+        "icon": "thunder_spell2.png",
+        "animation": "E_thunder_spell2.gif",
+        "damage": "3",
+        "cost": "2"
+        },
+        "thunder_spell3": {
+        "icon": "thunder_spell3.png",
+        "animation": "E_thunder_spell3.gif",
+        "damage": "7",
+        "cost": "5"
+        },
+        "thunder_spell4": {
+        "icon": "thunder_spell4.png",
+        "animation": "E_thunder_spell4.gif",
+        "damage": "9",
+        "cost": "11"
+        },
+        "purple_spell1": {
+        "icon": "purple_spell1.png",
+        "animation": "E_purple_spell1.gif",
+        "damage": "15",
+        "cost": "20"
+        },
+        "purple_spell2": {
+        "icon": "purple_spell2.png",
+        "animation": "E_purple_spell2.gif",
+        "damage": "6",
+        "cost": "3"
+        },
+        "purple_spell3": {
+        "icon": "purple_spell3.png",
+        "animation": "E_purple_spell3.gif",
+        "damage": "1",
+        "cost": "0"
+        },
+        "purple_spell4": {
+        "icon": "purple_spell4.png",
+        "animation": "E_purple_spell4.gif",
+        "damage": "10",
+        "cost": "12"
+        },
+        "holy_spell1": {
+        "icon": "holy_spell1.png",
+        "animation": "E_holy_spell1.gif",
+        "damage": "5",
+        "cost": "3"
+        },
+        "holy_spell2": {
+        "icon": "holy_spell2.png",
+        "animation": "E_holy_spell2.gif",
+        "damage": "2",
+        "cost": "0"
+        },
+        "holy_spell3": {
+        "icon": "holy_spell3.png",
+        "animation": "E_holy_spell3.gif",
+        "damage": "6",
+        "cost": "4"
+        },
+        "holy_spell4": {
+        "icon": "holy_spell4.png",
+        "animation": "E_holy_spell4.gif",
+        "damage": "9",
+        "cost": "11"
+        }
+}
